@@ -10,25 +10,12 @@ import {
 import { LuClock3, LuSparkles } from "react-icons/lu";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import Header from "../../Component/Header/Header";
 import NewHeroSection from "../../Component/NewHeroSection/NewHeroSection";
-import insightsBg from "../../assets/Herosection/Insights-bg.jpg";
+import insightsBg from "../../assets/Herosection/3.webp";
 import Footer from "../../Component/Footer/Footer";
 import InsightCard from "../../Components/InsightCard";
 import { insights } from "../../Data/insights";
-// import heroBackground from "../../assets/Background.gif";
-// import heroBackgroundVideo from "../../assets/animo.webm";
-import heroBackgroundVideo from "../../assets/animo3.mp4";
-import caseStudyImage from "../../assets/insights/case-study.png";
-import consultationCtaImage from "../../assets/insights/consultation-cta.png";
-import newsletterImage from "../../assets/insights/newsletter.png";
-import resourcesImage from "../../assets/insights/resources.png";
-import trendingInsightsImage from "../../assets/insights/trending-insights.png";
 import "./Insightspage.css";
-import { CallToAction } from "../Homepage/Homepage";
-
-// Set to false to restore the previous hero and header.
-const USE_NEW_HERO = true;
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -104,29 +91,10 @@ const trendingInsights = insights.slice(0, 4);
 
 export default function Insightspage() {
   const pageRef = useRef(null);
-  const heroRef = useRef(null);
 
   useLayoutEffect(() => {
     const context = gsap.context(() => {
       if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-
-      gsap.fromTo(
-        [
-          ".insights-hero__breadcrumb",
-          ".insights-hero__title",
-          ".insights-hero__description",
-          ".insights-hero__buttons",
-        ],
-        { autoAlpha: 0, y: 38 },
-        {
-          autoAlpha: 1,
-          y: 0,
-          duration: 1,
-          stagger: 0.14,
-          ease: "power3.out",
-          delay: 0.12,
-        },
-      );
 
       gsap.utils.toArray(".insights-page__reveal").forEach((section) => {
         const items = section.querySelectorAll(".insights-page__stagger");
@@ -157,73 +125,18 @@ export default function Insightspage() {
   return (
     <div className="insights-page" ref={pageRef}>
       <main>
-        {USE_NEW_HERO ? (
-          <NewHeroSection
-            id="insights-page-title"
-            title="Insights & Perspectives"
-            description="Explore industry trends, strategic thinking, technology innovations, design inspiration, and practical knowledge that help businesses grow confidently in the digital era."
-            primaryAction={{ label: "Explore Articles", href: "#latest-insights" }}
-            secondaryAction={{
-              label: "Book a Consultation",
-              to: "/contact#get-in-touch",
-            }}
-            backgroundImage={insightsBg}
-            scrollTo="#featured-insight"
-          />
-        ) : (
-          /* Existing hero retained for rollback */
-          <section
-          className="insights-hero"
-          aria-labelledby="insights-page-title"
-          ref={heroRef}
-        >
-          {/* <img
-            className="insights-hero__background"
-            src={heroBackground}
-            alt=""
-            aria-hidden="true"
-            fetchPriority="high"
-          /> */}
-          <video
-            className="insights-hero__background"
-            src={heroBackgroundVideo}
-            autoPlay
-            muted
-            loop
-            playsInline
-            aria-hidden="true"
-          />
-          <Header />
-
-          <div className="insights-hero__container">
-            <div className="insights-hero__content">
-            
-              <h1 className="insights-hero__title" id="insights-page-title">
-                Insights &amp; Perspectives
-              </h1>
-              <p className="insights-hero__description">
-                Explore industry trends, strategic thinking, technology
-                innovations, design inspiration, and practical knowledge that
-                help businesses grow confidently in the digital era.
-              </p>
-              <div className="insights-hero__buttons">
-                <a className="insights-button insights-button--dark" href="#latest-insights">
-                  Explore Articles
-                </a>
-                <Link
-                  className="insights-button insights-button--light"
-                  to="/contact#get-in-touch"
-                >
-                  Book a Consultation
-                </Link>
-              </div>
-            </div>
-          </div>
-          <a className="insights-hero__scroll" href="#featured-insight">
-            Scroll Down <span aria-hidden="true">↓</span>
-          </a>
-        </section>
-        )}
+        <NewHeroSection
+          id="insights-page-title"
+          title="Insights & Perspectives"
+          description="Explore industry trends, strategic thinking, technology innovations, design inspiration, and practical knowledge that help businesses grow confidently in the digital era."
+          primaryAction={{ label: "Explore Articles", href: "#latest-insights" }}
+          secondaryAction={{
+            label: "Book a Consultation",
+            to: "/contact#get-in-touch",
+          }}
+          backgroundImage={insightsBg}
+          scrollTo="#featured-insight"
+        />
 
         <section
           className="featured-insight insights-page__section insights-page__reveal"
@@ -340,6 +253,7 @@ export default function Insightspage() {
             <div className="trending-insights__track">
               {trendingInsights.map((insight, index) => (
                 <InsightCard
+                  key={insight.slug}
                   article={insight}
                   variant="trending"
                   number={String(index + 1).padStart(2, "0")}
@@ -355,16 +269,6 @@ export default function Insightspage() {
           className="insights-cases insights-page__section insights-page__reveal"
           aria-labelledby="case-studies-title"
         >
-          {/* <img
-            className="insights-section-illustration insights-section-illustration--cases"
-            src={caseStudyImage}
-            alt=""
-            aria-hidden="true"
-            loading="lazy"
-            decoding="async"
-            width="1200"
-            height="900"
-          /> */}
           <div className="insights-page__container">
             <header className="insights-section-heading insights-page__stagger">
               <span className="insights-label">CASE STUDIES</span>
@@ -391,16 +295,6 @@ export default function Insightspage() {
           className="insights-resources-page insights-page__section insights-page__reveal"
           aria-labelledby="resources-title"
         >
-          {/* <img
-            className="insights-section-illustration insights-section-illustration--resources"
-            src={resourcesImage}
-            alt=""
-            aria-hidden="true"
-            loading="lazy"
-            decoding="async"
-            width="1200"
-            height="900"
-          /> */}
           <div className="insights-page__container">
             <header className="insights-section-heading insights-page__stagger">
               <span className="insights-label">RESOURCES</span>
@@ -424,16 +318,6 @@ export default function Insightspage() {
         <section className="insights-newsletter insights-page__section insights-page__reveal">
           <div className="insights-page__container">
             <div className="insights-newsletter__card insights-page__stagger">
-              {/* <img
-                className="insights-card-illustration insights-card-illustration--newsletter"
-                src={newsletterImage}
-                alt=""
-                aria-hidden="true"
-                loading="lazy"
-                decoding="async"
-                width="1200"
-                height="900"
-              /> */}
               <span className="insights-label">NEWSLETTER</span>
               <h2>Stay Ahead with RAPT &amp; Co.</h2>
               <p>
@@ -455,38 +339,6 @@ export default function Insightspage() {
             </div>
           </div>
         </section>
-
-        {/* <section className="insights-final-cta insights-page__section insights-page__reveal">
-          <div className="insights-page__container">
-            <div className="insights-final-cta__card insights-page__stagger">
-              <img
-                className="insights-card-illustration insights-card-illustration--cta"
-                src={consultationCtaImage}
-                alt=""
-                aria-hidden="true"
-                loading="lazy"
-                decoding="async"
-                width="1200"
-                height="900"
-              />
-              <h2>Let&apos;s Build the Future Together</h2>
-              <p>
-                Whether you&apos;re modernizing your business, strengthening
-                your brand, or embracing digital transformation, our team is
-                ready to help.
-              </p>
-              <div>
-                <Link className="insights-button insights-button--dark" to="/contact#get-in-touch">
-                  Book a Consultation
-                </Link>
-                <Link className="insights-button insights-button--light" to="/contact">
-                  Contact Us
-                </Link>
-              </div>
-            </div>
-          </div>
-        </section> */}
-        {/* <CallToAction /> */}
 
       </main>
       <Footer />

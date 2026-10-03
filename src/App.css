@@ -1,4 +1,3 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;1,500&display=swap");
 
 html {
   scroll-behavior: smooth;
@@ -42,94 +41,8 @@ button, a, input, select, textarea {
 @media (min-width: 1200px) { :root { --layout-gutter: 70px; } }
 @media (min-width: 1440px) { :root { --layout-gutter: 85px; } }
 
-.homepage-hero::after,
-.about-hero::after,
-.service-hero::after,
-.contact-hero::after,
-.insights-hero::after {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  content: "";
-  /* background: linear-gradient(to top, rgb(0 0 0 / 75%) 0%, transparent 100%); */
-  /* backdrop-filter: blur(1.5px); */
-  /* -webkit-backdrop-filter: blur(1.5px); */
-  pointer-events: none;
-}
-
-.homepage-hero .homepage-hero__background,
-.about-hero .about-hero__background,
-.service-hero .service-hero__background,
-.contact-hero .contact-hero__background,
-.insights-hero .insights-hero__background {
-  z-index: 0;
-}
-
-.about-hero .about-hero__container,
-.about-hero .about-hero__scroll {
-  z-index: 2;
-}
-
-.homepage-hero .homepage-hero__title,
-.homepage-hero .homepage-hero__description,
-.about-hero .about-hero__title,
-.about-hero .about-hero__subtitle,
-.about-hero .about-hero__description,
-.service-hero .service-hero__title,
-.service-hero .service-hero__description,
-.contact-hero .contact-hero__title,
-.contact-hero .contact-hero__description,
-.insights-hero .insights-hero__title,
-.insights-hero .insights-hero__description {
-  color: #0a0a0a;
-  text-shadow: 0 2px 8px rgba(250, 249, 249, 0.2);
-
-}
-
-.homepage-hero .homepage-hero__secondary,
-.service-hero .service-hero__secondary,
-.contact-hero .contact-hero__secondary {
-  border-color: #292929;
-  color: #0e0d0d;
-   background: rgb(255 255 255 / 55%);
-
-  box-shadow: 0 5px 8px rgb(0 0 0 / 20%);
-}
-.homepage-hero .homepage-hero__primary,
-.service-hero .service-hero__primary,
-.contact-hero .contact-hero__primary{
-  border-color: #cb6724;
-  color: #fff;
-  background: #cb6724ee;
-  box-shadow: 0 5px 8px rgb(0 0 0 / 20%);
-}
-.homepage-hero .homepage-hero__secondary:hover,
-.service-hero .service-hero__secondary:hover,
-.contact-hero .contact-hero__secondary:hover {
-  background: #292929;
-  box-shadow: 0 10px 24px rgb(0 0 0 / 22%);
-}
-
-.homepage-hero .homepage-hero__buttons a,
-.service-hero .service-hero__buttons a,
-.contact-hero .contact-hero__buttons a,
-.insights-hero .insights-hero__buttons a {
-  text-shadow: 0 1px 6px rgb(255 255 255 / 16%);
-  filter: drop-shadow(0 3px 8px rgb(255 255 255 / 14%));
-}
-
-.homepage-hero .homepage-hero__scroll,
-.about-hero .about-hero__scroll,
-.service-hero .service-hero__scroll,
-.contact-hero .contact-hero__scroll,
-.insights-hero .insights-hero__scroll {
-  color: transparent;
-  /* background: linear-gradient(90deg, #d8e5fe, #c9ffe8, #fad7bf); */
-  /* background-clip: text; */
-  color:rgb(12, 12, 12);
-  /* -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent; */
-  text-shadow: 0 2px 8px rgb(255 255 255 / 50%);
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -1,23 +1,16 @@
 import { useLayoutEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import Header from "../../Component/Header/Header";
 import NewHeroSection from "../../Component/NewHeroSection/NewHeroSection";
-import aboutBg from "../../assets/Herosection/About-bg.jpg";
+import aboutBg from "../../assets/Herosection/4.webp";
 import Footer from "../../Component/Footer/Footer";
 import {
   CallToAction,
   InsightsResources,
   LeadershipTeam,
 } from "../Homepage/Homepage";
-// import aboutBackground from "../../assets/Background.gif";
-// import aboutBackgroundVideo from "../../assets/animo.webm";
-import aboutBackgroundVideo from "../../assets/animo3.mp4";
-import purposeBackground from "../../assets/Client_bg.png";
+import purposeBackground from "../../assets/Client_bg.webp";
 import "./Aboutpage.css";
-
-// Set to false to restore the previous hero and header.
-const USE_NEW_HERO = true;
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -56,7 +49,6 @@ const journeyStages = [
 
 export default function Aboutpage() {
   const [activeJourneyStage, setActiveJourneyStage] = useState(0);
-  const heroRef = useRef(null);
   const whoWeAreRef = useRef(null);
   const journeyContentRef = useRef(null);
   const journeyActiveLineRef = useRef(null);
@@ -98,29 +90,6 @@ export default function Aboutpage() {
       window.removeEventListener("resize", handleResize);
     };
   }, [activeJourneyStage]);
-
-  useLayoutEffect(() => {
-    const context = gsap.context(() => {
-      gsap.fromTo(
-        [
-          ".about-hero__title",
-          ".about-hero__subtitle",
-          ".about-hero__description",
-          ".about-hero__scroll",
-        ],
-        { autoAlpha: 0, y: 40 },
-        {
-          autoAlpha: 1,
-          y: 0,
-          duration: 1,
-          ease: "power3.out",
-          stagger: 0.15,
-        },
-      );
-    }, heroRef);
-
-    return () => context.revert();
-  }, []);
 
   useLayoutEffect(() => {
     const context = gsap.context(() => {
@@ -253,63 +222,15 @@ export default function Aboutpage() {
 
   return (
     <>
-      {!USE_NEW_HERO && <Header />}
       <main className="about-page">
-        {USE_NEW_HERO ? (
-          <NewHeroSection
-            id="about-hero-title"
-            title="Welcome to RAPT & Co."
-            subtitle="Building Confidence Through Intelligent Advisory."
-            description="Technology-driven advisory helping organizations navigate governance, taxation, privacy, risk, and regulatory compliance through trusted expertise, integrated solutions, and long-term strategic partnerships."
-            backgroundImage={aboutBg}
-            scrollTo="#who-we-are-title"
-          />
-        ) : (
-          /* Existing hero retained for rollback */
-          <section
-          className="about-hero"
-          aria-labelledby="about-hero-title"
-          ref={heroRef}
-        >
-          {/* <img
-            className="about-hero__background"
-            src={aboutBackground}
-            alt=""
-            aria-hidden="true"
-            fetchPriority="high"
-          /> */}
-          <video
-            className="about-hero__background"
-            src={aboutBackgroundVideo}
-            autoPlay
-            muted
-            loop
-            playsInline
-            aria-hidden="true"
-          />
-
-          <div className="about-hero__container">
-            <div className="about-hero__content">
-              <h1 className="about-hero__title" id="about-hero-title">
-                Welcome to RAPT &amp; Co.
-              </h1>
-              <p className="about-hero__subtitle">
-                Building Confidence Through Intelligent Advisory.
-              </p>
-              <p className="about-hero__description">
-                Technology-driven advisory helping organizations navigate
-                governance, taxation, privacy, risk, and regulatory compliance
-                through trusted expertise, integrated solutions, and long-term
-                strategic partnerships.
-              </p>
-            </div>
-          </div>
-
-          <span className="about-hero__scroll" aria-hidden="true">
-            Scroll Down ↓
-          </span>
-        </section>
-        )}
+        <NewHeroSection
+          id="about-hero-title"
+          title="Welcome to RAPT & Co."
+          subtitle="Building Confidence Through Intelligent Advisory."
+          description="Technology-driven advisory helping organizations navigate governance, taxation, privacy, risk, and regulatory compliance through trusted expertise, integrated solutions, and long-term strategic partnerships."
+          backgroundImage={aboutBg}
+          scrollTo="#who-we-are-title"
+        />
 
         <section
           className="who-we-are"

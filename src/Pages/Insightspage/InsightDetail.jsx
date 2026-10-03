@@ -86,7 +86,7 @@ function ArticleContent({ block }) {
   if (block.type === "source") {
     return (
       <p>
-        <a href={block.href} target="_blank" rel="noreferrer">
+        <a href={block.href} target="_blank" rel="noopener noreferrer">
           {block.label}
         </a>
       </p>
@@ -312,7 +312,7 @@ export default function InsightDetail() {
                     <a
                       href={linkedInUrl}
                       target="_blank"
-                      rel="noreferrer"
+                      rel="noopener noreferrer"
                       aria-label="Share on LinkedIn"
                     >
                       <FaLinkedinIn aria-hidden="true" />
@@ -320,7 +320,7 @@ export default function InsightDetail() {
                     <a
                       href={twitterUrl}
                       target="_blank"
-                      rel="noreferrer"
+                      rel="noopener noreferrer"
                       aria-label="Share on X"
                     >
                       <FaXTwitter aria-hidden="true" />

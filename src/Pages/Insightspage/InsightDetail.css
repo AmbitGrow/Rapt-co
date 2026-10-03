@@ -404,41 +404,6 @@
   text-decoration: none;
 }
 
-.insight-detail-cta {
-  padding: 20px 0 var(--section-space);
-}
-
-.insight-detail-cta__card {
-  padding: clamp(50px, 7vw, 95px);
-  border-radius: 36px;
-  color: #fff;
-  background:
-    radial-gradient(circle at 10% 0%, rgb(64 100 156 / 58%), transparent 42%),
-    radial-gradient(circle at 90% 100%, rgb(203 103 36 / 36%), transparent 43%),
-    #303535;
-  text-align: center;
-}
-
-.insight-detail-cta__card > span {
-  font-size: 12px;
-  letter-spacing: .08em;
-}
-
-.insight-detail-cta__card h2 {
-  margin: 25px 0 0;
-  font-size: clamp(38px, 4vw, 60px);
-  font-weight: 500;
-  letter-spacing: -.035em;
-}
-
-.insight-detail-cta__card p {
-  max-width: 760px;
-  margin: 24px auto 0;
-  color: #d6d6d6;
-  font-size: 17px;
-  line-height: 29px;
-}
-
 .insight-detail-cta__card a,
 .insight-detail--missing main > a {
   display: inline-flex;
@@ -453,10 +418,6 @@
   background: #fff;
   text-decoration: none;
   transition: transform 250ms ease;
-}
-
-.insight-detail-cta__card a:hover {
-  transform: translate3d(0, -3px, 0);
 }
 
 .insight-detail--missing main {
@@ -589,10 +550,6 @@
 
   .insight-related__grid .insight-card:last-child {
     display: block;
-  }
-
-  .insight-detail-cta__card {
-    border-radius: 26px;
   }
 }
 

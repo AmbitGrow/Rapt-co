@@ -3,19 +3,12 @@ import { NavLink } from "react-router-dom";
 import { FaArrowRight } from "react-icons/fa";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import Header from "../../Component/Header/Header";
 import NewHeroSection from "../../Component/NewHeroSection/NewHeroSection";
-import expertiseBg from "../../assets/Herosection/Expertise-bg.jpg";
+import expertiseBg from "../../assets/Herosection/2.webp";
 import Footer from "../../Component/Footer/Footer";
-// import heroBackground from "../../assets/Background.gif";
-// import heroBackgroundVideo from "../../assets/animo.webm";
-import heroBackgroundVideo from "../../assets/animo3.mp4";
 import telecommunicationImage from "../../assets/services/telecommunication.webp";
 import "./Servicepage.css";
 import { CallToAction } from "../Homepage/Homepage";
-
-// Set to false to restore the previous hero and header.
-const USE_NEW_HERO = true;
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -248,32 +241,7 @@ const industries = [
 
 export default function Servicepage() {
   const [activeService, setActiveService] = useState(0);
-  const heroRef = useRef(null);
   const approachRef = useRef(null);
-
-  useLayoutEffect(() => {
-    const context = gsap.context(() => {
-      gsap.fromTo(
-        [
-          ".service-hero__title",
-          ".service-hero__description",
-          ".service-hero__buttons",
-          ".service-hero__scroll",
-        ],
-        { autoAlpha: 0, y: 38 },
-        {
-          autoAlpha: 1,
-          y: 0,
-          duration: 1,
-          stagger: 0.16,
-          ease: "power3.out",
-          delay: 0.12,
-        },
-      );
-    }, heroRef);
-
-    return () => context.revert();
-  }, []);
 
   useLayoutEffect(() => {
     const context = gsap.context(() => {
@@ -358,90 +326,25 @@ export default function Servicepage() {
   return (
     <>
       <main>
-        {USE_NEW_HERO ? (
-          <NewHeroSection
-            id="service-hero-title"
-            title={
-              <>
-                Expertise That Helps <em>Organizations</em>
-                <br />
-                Navigate Complexity.
-              </>
-            }
-            description="From governance and regulatory compliance to taxation, digital privacy, cybersecurity, and enterprise risk, RAPT & Co. provides integrated advisory services designed to help organizations operate with confidence in an increasingly regulated world."
-            primaryAction={{ label: "Book a Consultation", to: "/#cta-heading" }}
-            secondaryAction={{
-              label: "Download Company Profile",
-              href: "/company-profile.pdf",
-              download: true,
-            }}
-            backgroundImage={expertiseBg}
-            scrollTo="#service-expertise-title"
-          />
-        ) : (
-          /* Existing hero retained for rollback */
-          <section
-          className="service-hero"
-          aria-labelledby="service-hero-title"
-          ref={heroRef}
-        >
-          {/* <img
-            className="service-hero__background"
-            src={heroBackground}
-            alt=""
-            aria-hidden="true"
-            fetchPriority="high"
-          /> */}
-          <video
-            className="service-hero__background"
-            src={heroBackgroundVideo}
-            autoPlay
-            muted
-            loop
-            playsInline
-            aria-hidden="true"
-          />
-          <Header />
-
-          <div className="service-hero__container">
-            <div className="service-hero__content">
-              <h1 className="service-hero__title" id="service-hero-title">
-                Expertise That Helps <em>Organizations</em>
-                <br />
-                Navigate Complexity.
-              </h1>
-
-              <p className="service-hero__description">
-                From governance and regulatory compliance to taxation, digital
-                privacy, cybersecurity, and enterprise risk, RAPT &amp; Co.
-                provides integrated advisory services designed to help
-                organizations operate with confidence in an increasingly
-                regulated world.
-              </p>
-
-              <div className="service-hero__buttons">
-                <NavLink
-                  className="service-hero__primary"
-                  to="/#cta-heading"
-                >
-                  Book a Consultation
-                </NavLink>
-                <a
-                  className="service-hero__secondary"
-                  href="/company-profile.pdf"
-                  download
-                >
-                  Download Company Profile
-                </a>
-              </div>
-            </div>
-          </div>
-
-          <span className="service-hero__scroll" aria-hidden="true">
-            Scroll Down ↓
-          </span>
-        </section>
-        )}
+        <NewHeroSection
+          id="service-hero-title"
+          title={
+            <>
+              Expertise That Helps <em>Organizations</em>
+              <br />
+              Navigate Complexity.
+            </>
+          }
+          description="From governance and regulatory compliance to taxation, digital privacy, cybersecurity, and enterprise risk, RAPT & Co. provides integrated advisory services designed to help organizations operate with confidence in an increasingly regulated world."
+          primaryAction={{ label: "Book a Consultation", to: "/#cta-heading" }}
+          secondaryAction={{
+            label: "Download Company Profile",
+            href: "/company-profile.pdf",
+            download: true,
+          }}
+          backgroundImage={expertiseBg}
+          scrollTo="#service-expertise-title"
+        />
 
         <section
           className="service-expertise"

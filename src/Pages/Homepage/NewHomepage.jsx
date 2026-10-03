@@ -1,5 +1,6 @@
 import NewHeroSection from "../../Component/NewHeroSection/NewHeroSection";
-import homeBg from "../../assets/Herosection/Home-bg.jpg";
+import homeBg from "../../assets/Herosection/1.webp";
+
 import Homepage from "./Homepage";
 import "./NewHomepage.css";
 

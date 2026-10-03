@@ -1,26 +1,18 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { NavLink, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { RiArrowLeftLongLine } from "react-icons/ri";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import Header from "../../Component/Header/Header";
 import NewHeroSection from "../../Component/NewHeroSection/NewHeroSection";
-import contactBg from "../../assets/Herosection/Contact-bg.jpg";
+import contactBg from "../../assets/Herosection/5.webp";
 import Footer from "../../Component/Footer/Footer";
 import { FrequentlyAskedQuestions } from "../Homepage/Homepage";
-// import heroBackground from "../../assets/Background.gif";
-// import heroBackgroundVideo from "../../assets/animo.webm";
-import heroBackgroundVideo from "../../assets/animo3.mp4";
 import "./Contactpage.css";
-
-// Set to false to restore the previous hero and header.
-const USE_NEW_HERO = true;
 
 gsap.registerPlugin(ScrollTrigger);
 
 export default function Contactpage() {
   const location = useLocation();
-  const heroRef = useRef(null);
   const getInTouchRef = useRef(null);
   const [formData, setFormData] = useState({
     name: "",
@@ -43,30 +35,6 @@ export default function Contactpage() {
 
     return () => cancelAnimationFrame(frame);
   }, [location.hash]);
-
-  useLayoutEffect(() => {
-    const context = gsap.context(() => {
-      gsap.fromTo(
-        [
-          ".contact-hero__title",
-          ".contact-hero__description",
-          ".contact-hero__buttons",
-          ".contact-hero__scroll",
-        ],
-        { autoAlpha: 0, y: 38 },
-        {
-          autoAlpha: 1,
-          y: 0,
-          duration: 1,
-          stagger: 0.15,
-          ease: "power3.out",
-          delay: 0.12,
-        },
-      );
-    }, heroRef);
-
-    return () => context.revert();
-  }, []);
 
   useLayoutEffect(() => {
     const context = gsap.context(() => {
@@ -109,77 +77,22 @@ export default function Contactpage() {
   return (
     <>
       <main>
-        {USE_NEW_HERO ? (
-          <NewHeroSection
-            id="contact-hero-title"
-            title="Let's Start a Conversation."
-            description="Whether you're navigating regulatory change, planning for compliance, or seeking strategic advisory, our team is here to help. Tell us about your requirements, and we'll connect you with the right experts."
-            primaryAction={{
-              label: "Book a Consultation",
-              to: "/contact#get-in-touch",
-            }}
-            secondaryAction={{
-              label: "Download Company Profile",
-              href: "/company-profile.pdf",
-              download: true,
-            }}
-            backgroundImage={contactBg}
-            scrollTo="#faq-heading"
-          />
-        ) : (
-          /* Existing hero retained for rollback */
-          <section
-          className="contact-hero"
-          aria-labelledby="contact-hero-title"
-          ref={heroRef}
-        >
-          {/* <img
-            className="contact-hero__background"
-            src={heroBackground}
-            alt=""
-            aria-hidden="true"
-            fetchPriority="high"
-          /> */}
-          <video
-            className="contact-hero__background"
-            src={heroBackgroundVideo}
-            autoPlay
-            muted
-            loop
-            playsInline
-            aria-hidden="true"
-          />
-          <Header />
-
-          <div className="contact-hero__content">
-            <h1 className="contact-hero__title" id="contact-hero-title">
-              Let&apos;s Start a Conversation.
-            </h1>
-            <p className="contact-hero__description">
-              Whether you&apos;re navigating regulatory change, planning for
-              compliance, or seeking strategic advisory, our team is here to
-              help. Tell us about your requirements, and we&apos;ll connect you
-              with the right experts.
-            </p>
-            <div className="contact-hero__buttons">
-              <NavLink className="contact-hero__primary" to="/contact#get-in-touch">
-                Book a Consultation
-              </NavLink>
-              <a
-                className="contact-hero__secondary"
-                href="/company-profile.pdf"
-                download
-              >
-                Download Company Profile
-              </a>
-            </div>
-          </div>
-
-          <a className="contact-hero__scroll" href="#faq-heading">
-            Scroll Down <span aria-hidden="true">↓</span>
-          </a>
-        </section>
-        )}
+        <NewHeroSection
+          id="contact-hero-title"
+          title="Let's Start a Conversation."
+          description="Whether you're navigating regulatory change, planning for compliance, or seeking strategic advisory, our team is here to help. Tell us about your requirements, and we'll connect you with the right experts."
+          primaryAction={{
+            label: "Book a Consultation",
+            to: "/contact#get-in-touch",
+          }}
+          secondaryAction={{
+            label: "Download Company Profile",
+            href: "/company-profile.pdf",
+            download: true,
+          }}
+          backgroundImage={contactBg}
+          scrollTo="#faq-heading"
+        />
 
         <section
           id="get-in-touch"
@@ -227,7 +140,7 @@ export default function Contactpage() {
                 <a
                   href="https://maps.google.com/?q=Chennai,Tamil+Nadu,India"
                   target="_blank"
-                  rel="noreferrer"
+                  rel="noopener noreferrer"
                 >
                   See on Google Maps{" "}
                   <RiArrowLeftLongLine
@@ -264,6 +177,7 @@ export default function Contactpage() {
                     <input
                       id="consultation-name"
                       name="name"
+                      autoComplete="name"
                       type="text"
                       placeholder=" "
                       value={formData.name}
@@ -276,6 +190,7 @@ export default function Contactpage() {
                     <input
                       id="consultation-email"
                       name="email"
+                      autoComplete="email"
                       type="email"
                       placeholder=" "
                       value={formData.email}
@@ -288,6 +203,7 @@ export default function Contactpage() {
                     <input
                       id="consultation-phone"
                       name="phone"
+                      autoComplete="tel"
                       type="tel"
                       placeholder=" "
                       value={formData.phone}
@@ -300,6 +216,7 @@ export default function Contactpage() {
                     <input
                       id="consultation-company"
                       name="company"
+                      autoComplete="organization"
                       type="text"
                       placeholder=" "
                       value={formData.company}

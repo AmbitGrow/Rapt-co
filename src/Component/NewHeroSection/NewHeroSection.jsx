@@ -69,10 +69,13 @@ export default function NewHeroSection({
 
   return (
     <section className="new-hero" aria-labelledby={id} ref={heroRef}>
-      <div
+      <img
         className="new-hero__background"
-        style={{ backgroundImage: `url(${backgroundImage})` }}
+        src={backgroundImage}
+        alt=""
         aria-hidden="true"
+        fetchPriority="high"
+        decoding="async"
       />
       <div className="new-hero__overlay" aria-hidden="true" />
 

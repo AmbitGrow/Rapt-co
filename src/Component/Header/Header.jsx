@@ -25,7 +25,7 @@ export default function Header() {
   return (
     <header className={`site-header${isMenuOpen ? " is-menu-open" : ""}`}>
       <NavLink className="site-header__logo" to="/" onClick={closeMenu}>
-        RAPT &amp; CO
+        RAPT &amp; Co
       </NavLink>
 
       <div

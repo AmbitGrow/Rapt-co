@@ -59,7 +59,7 @@ export default function Footer() {
 
         <nav className="site-footer__links" aria-labelledby="footer-expertise-heading">
           <h3 id="footer-expertise-heading">Expertise</h3>
-          {expertiseLinks.map((link) => <a href="#expertise" key={link}>{link}</a>)}
+          {expertiseLinks.map((link) => <Link to="/expertise" key={link}>{link}</Link>)}
         </nav>
 
         <nav className="site-footer__links" aria-labelledby="footer-quick-links-heading">

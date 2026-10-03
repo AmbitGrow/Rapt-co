@@ -22,9 +22,10 @@
 .new-hero__background {
   position: absolute;
   inset: 0;
-  background-position: 75% center;
-  background-repeat: no-repeat;
-  background-size: cover;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 75% center;
 }
 
 .new-hero__overlay {
@@ -151,7 +152,7 @@
   }
 
   .new-hero__background {
-    background-position: 70% center;
+    object-position: 70% center;
   }
 
   .new-hero__title {
@@ -175,7 +176,7 @@
   }
 
   .new-hero__background {
-    background-position: 68% center;
+    object-position: 68% center;
   }
 
   .new-hero__description {
