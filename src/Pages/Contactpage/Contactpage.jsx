@@ -5,6 +5,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import NewHeroSection from "../../Component/NewHeroSection/NewHeroSection";
 import contactBg from "../../assets/Herosection/5.webp";
+import contactBgPortrait from "../../assets/Herosection/5-portrait.webp";
 import Footer from "../../Component/Footer/Footer";
 import { FrequentlyAskedQuestions } from "../Homepage/Homepage";
 import { services } from "../../Data/services";
@@ -179,6 +180,7 @@ export default function Contactpage() {
             download: true,
           }}
           backgroundImage={contactBg}
+          mobileBackgroundImage={contactBgPortrait}
           scrollTo="#faq-heading"
         />
 

@@ -3,9 +3,9 @@ import { Link } from "react-router-dom";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import articlesCardBackground from "../../assets/ArticlesCard.webp";
 import ctaBackground from "../../assets/CTA_section_bg_1920.webp";
-import panIndiaImage from "../../assets/PanIndia.png";
-import technologyDrivenImage from "../../assets/Technology-driven.png";
-import oneFirmImage from "../../assets/one-firm.png";
+import panIndiaImage from "../../assets/PanIndia-200.webp";
+import technologyDrivenImage from "../../assets/Technology-driven-200.webp";
+import oneFirmImage from "../../assets/one-firm-200.webp";
 import dpdpaIllustration from "../../assets/DPDPA_svg_600.webp";
 import socIllustration from "../../assets/SOC_svg_600.webp";
 import privacyIllustration from "../../assets/Privacy_svg_600.webp";
@@ -434,6 +434,7 @@ function HorizontalCarousel({ items }) {
 
 export default function Homepage({ hero = null }) {
   const globeHostRef = useRef(null);
+  const advisoryRef = useRef(null);
   const [shouldRenderGlobe, setShouldRenderGlobe] = useState(false);
   const [isGlobeVisible, setIsGlobeVisible] = useState(false);
 
@@ -475,6 +476,27 @@ export default function Homepage({ hero = null }) {
       removeInteractionListeners();
       observer?.disconnect();
     };
+  }, []);
+
+  // Below-the-fold card artwork (CSS backgrounds) is applied only once the section is
+  // within 600px of the viewport, so it no longer competes with the initial load.
+  useEffect(() => {
+    const section = advisoryRef.current;
+    if (!section) return undefined;
+    if (!("IntersectionObserver" in window)) {
+      section.classList.add("is-near");
+      return undefined;
+    }
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        section.classList.add("is-near");
+        observer.disconnect();
+      },
+      { rootMargin: "600px 0px" },
+    );
+    observer.observe(section);
+    return () => observer.disconnect();
   }, []);
 
   useEffect(() => {
@@ -573,7 +595,7 @@ export default function Homepage({ hero = null }) {
         </div>
       </section>
 
-      <section className="advisory-philosophy" aria-labelledby="advisory-heading">
+      <section className="advisory-philosophy" aria-labelledby="advisory-heading" ref={advisoryRef}>
         <div className="advisory-philosophy__container">
           <header className="advisory-philosophy__header">
             <div className="advisory-philosophy__title-group">

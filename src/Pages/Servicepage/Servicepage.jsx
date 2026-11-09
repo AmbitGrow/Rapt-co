@@ -5,6 +5,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import NewHeroSection from "../../Component/NewHeroSection/NewHeroSection";
 import expertiseBg from "../../assets/Herosection/2.webp";
+import expertiseBgPortrait from "../../assets/Herosection/2-portrait.webp";
 import Footer from "../../Component/Footer/Footer";
 import telecommunicationImage from "../../assets/services/telecommunication.webp";
 import "./Servicepage.css";
@@ -220,6 +221,7 @@ export default function Servicepage() {
             download: true,
           }}
           backgroundImage={expertiseBg}
+          mobileBackgroundImage={expertiseBgPortrait}
           scrollTo="#service-expertise-title"
         />
 

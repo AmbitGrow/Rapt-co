@@ -3,6 +3,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import NewHeroSection from "../../Component/NewHeroSection/NewHeroSection";
 import aboutBg from "../../assets/Herosection/4.webp";
+import aboutBgPortrait from "../../assets/Herosection/4-portrait.webp";
 import Footer from "../../Component/Footer/Footer";
 import {
   CallToAction,
@@ -229,6 +230,7 @@ export default function Aboutpage() {
           subtitle="Building Confidence Through Intelligent Advisory."
           description="Technology-driven advisory helping organizations navigate governance, taxation, privacy, risk, and regulatory compliance through trusted expertise, integrated solutions, and long-term strategic partnerships."
           backgroundImage={aboutBg}
+          mobileBackgroundImage={aboutBgPortrait}
           scrollTo="#who-we-are-title"
         />
 

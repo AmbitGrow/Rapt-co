@@ -6,6 +6,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import NewHeroSection from "../../Component/NewHeroSection/NewHeroSection";
 import insightsBg from "../../assets/Herosection/3.webp";
+import insightsBgPortrait from "../../assets/Herosection/3-portrait.webp";
 import Footer from "../../Component/Footer/Footer";
 import InsightCard from "../../Components/InsightCard";
 import { insightCategories, insights } from "../../Data/insights";
@@ -76,6 +77,7 @@ export default function Insightspage() {
             to: "/contact#get-in-touch",
           }}
           backgroundImage={insightsBg}
+          mobileBackgroundImage={insightsBgPortrait}
           scrollTo="#featured-insight"
         />
 
@@ -95,6 +97,13 @@ export default function Insightspage() {
                   {featuredInsight.featuredImage ? (
                     <img
                       src={featuredInsight.featuredImage}
+                      // Same candidates as the article's card below, so both resolve to one download.
+                      srcSet={
+                        featuredInsight.cardImage
+                          ? `${featuredInsight.cardImage} 720w, ${featuredInsight.featuredImage} ${featuredInsight.featuredImageWidth}w`
+                          : undefined
+                      }
+                      sizes={featuredInsight.cardImage ? "(max-width: 1100px) 92vw, 50vw" : undefined}
                       alt={`Cover for ${featuredInsight.title}`}
                       loading="lazy"
                       decoding="async"

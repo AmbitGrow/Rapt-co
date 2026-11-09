@@ -3,6 +3,10 @@ import majorDataBreachImage from "../assets/insights/MajorDataBreach.webp";
 import rajeshSaiIyerImage from "../assets/insights/Rajeshs_Sai_Iyer.webp";
 import driCustomsImage from "../assets/insights/DRI_customs.webp";
 import howSchoolsImage from "../assets/insights/HowSchools.webp";
+import criticalInfrastructureImageCard from "../assets/insights/CriticalInfrastructure&Datasecurity-720.webp";
+import majorDataBreachImageCard from "../assets/insights/MajorDataBreach-720.webp";
+import driCustomsImageCard from "../assets/insights/DRI_customs-720.webp";
+import howSchoolsImageCard from "../assets/insights/HowSchools-720.webp";
 
 export const insights = [
   {
@@ -382,7 +386,20 @@ function estimateReadingTime(article) {
   return `${Math.max(1, Math.round(words / 200))} min read`;
 }
 
+// 720px variants for cards (the article page keeps the full-size image).
+// Card variants: [720px image, width of the full-size original]. The article page keeps the full image.
+// (Rajeshs_Sai_Iyer is only 704px wide, so it needs no smaller variant.)
+const CARD_IMAGES = new Map([
+  [criticalInfrastructureImage, [criticalInfrastructureImageCard, 1080]],
+  [majorDataBreachImage, [majorDataBreachImageCard, 866]],
+  [driCustomsImage, [driCustomsImageCard, 934]],
+  [howSchoolsImage, [howSchoolsImageCard, 1080]],
+]);
+
 insights.forEach((article) => {
+  const [cardImage, fullWidth] = CARD_IMAGES.get(article.featuredImage) || [];
+  article.cardImage = cardImage || null;
+  article.featuredImageWidth = fullWidth || null;
   if (!article.readingTime) article.readingTime = estimateReadingTime(article);
 });
 
