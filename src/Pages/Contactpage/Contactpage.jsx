@@ -58,6 +58,8 @@ export default function Contactpage() {
   const [errors, setErrors] = useState({});
   const [status, setStatus] = useState({ state: "idle", message: "" });
   const startedAtRef = useRef(Date.now());
+  // A ref (not state) so a second click in the same frame can't start a second request.
+  const submittingRef = useRef(false);
 
   useEffect(() => {
     if (location.hash !== "#get-in-touch") return undefined;
@@ -115,7 +117,7 @@ export default function Contactpage() {
 
   const submitConsultation = async (event) => {
     event.preventDefault();
-    if (status.state === "submitting") return;
+    if (submittingRef.current) return;
 
     const nextErrors = validateForm(formData);
     setErrors(nextErrors);
@@ -125,6 +127,7 @@ export default function Contactpage() {
       return;
     }
 
+    submittingRef.current = true;
     setStatus({ state: "submitting", message: "" });
     try {
       const response = await fetch("/api/contact", {
@@ -134,7 +137,11 @@ export default function Contactpage() {
       });
       const result = await response.json().catch(() => ({}));
       if (!response.ok || !result.ok) {
-        if (result.errors) setErrors(result.errors);
+        if (result.errors) {
+          setErrors(result.errors);
+          setStatus({ state: "error", message: "Please correct the highlighted fields and try again." });
+          return;
+        }
         throw new Error(result.error || "Request failed");
       }
       setFormData(EMPTY_FORM);
@@ -149,6 +156,8 @@ export default function Contactpage() {
         state: "error",
         message: `We couldn't send your request right now. Please try again, or reach us directly at ${CONTACT_PHONE.display} or ${CONTACT_EMAILS[0]}.`,
       });
+    } finally {
+      submittingRef.current = false;
     }
   };
 
@@ -278,6 +287,7 @@ export default function Contactpage() {
                       type="text"
                       placeholder=" "
                       value={formData.name}
+                      maxLength={100}
                       onChange={updateField}
                       required
                       {...fieldProps("name")}
@@ -293,6 +303,7 @@ export default function Contactpage() {
                       type="email"
                       placeholder=" "
                       value={formData.email}
+                      maxLength={254}
                       onChange={updateField}
                       required
                       {...fieldProps("email")}
@@ -308,6 +319,7 @@ export default function Contactpage() {
                       type="tel"
                       placeholder=" "
                       value={formData.phone}
+                      maxLength={20}
                       onChange={updateField}
                       required
                       {...fieldProps("phone")}
@@ -323,6 +335,7 @@ export default function Contactpage() {
                       type="text"
                       placeholder=" "
                       value={formData.company}
+                      maxLength={150}
                       onChange={updateField}
                     />
                     <label htmlFor="consultation-company">
@@ -356,6 +369,7 @@ export default function Contactpage() {
                     name="message"
                     placeholder=" "
                     value={formData.message}
+                    maxLength={5000}
                     onChange={updateField}
                     required
                     {...fieldProps("message")}
