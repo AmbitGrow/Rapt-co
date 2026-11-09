@@ -1,6 +1,7 @@
 import { memo } from "react";
 import { Link } from "react-router-dom";
 import { FaArrowRight } from "react-icons/fa";
+import fallbackArtwork from "../assets/ArticlesCard.webp";
 
 const InsightCard = memo(function InsightCard({
   article,
@@ -45,6 +46,16 @@ const InsightCard = memo(function InsightCard({
                 decoding="async"
               />
             ) : null}
+            {!article.featuredImage && !article.cardBackground ? (
+              <img
+                className="insight-card__background-image"
+                src={fallbackArtwork}
+                alt=""
+                aria-hidden="true"
+                loading="lazy"
+                decoding="async"
+              />
+            ) : null}
             {article.featuredImage ? (
               <img
                 className="insight-card__illustration"
@@ -57,16 +68,16 @@ const InsightCard = memo(function InsightCard({
               />
             ) : null}
           </>
-        ) : article.featuredImage ? (
+        ) : (
           <img
-            src={article.featuredImage}
-            alt={`Cover for ${article.title}`}
+            src={article.featuredImage || fallbackArtwork}
+            alt={article.featuredImage ? `Cover for ${article.title}` : ""}
             loading="lazy"
             decoding="async"
             width="1200"
             height="900"
           />
-        ) : null}
+        )}
       </Link>
       <div className="insight-card__content">
         <span className="insights-card-category">{article.category}</span>
@@ -76,8 +87,8 @@ const InsightCard = memo(function InsightCard({
         <p>{article.excerpt}</p>
         <div className="insight-card__footer">
           <div className="insights-card-meta">
-            <span>{article.readingTime}</span>
-            <span>{article.publishDate}</span>
+            {article.readingTime ? <span>{article.readingTime}</span> : null}
+            {article.publishDate ? <span>{article.publishDate}</span> : null}
           </div>
           <Link
             to={`/insights/${article.slug}`}

@@ -6,7 +6,6 @@ import {
   FaCheck,
   FaLinkedinIn,
   FaLink,
-  FaXTwitter,
 } from "react-icons/fa6";
 import { LuClock3 } from "react-icons/lu";
 import gsap from "gsap";
@@ -16,6 +15,7 @@ import Footer from "../../Component/Footer/Footer";
 import RelatedInsights from "../../Components/RelatedInsights";
 import { CallToAction } from "../Homepage/Homepage";
 import { getInsightBySlug, insights } from "../../Data/insights";
+import { absoluteUrl } from "../../Data/seo";
 import "./Insightspage.css";
 import "./InsightDetail.css";
 
@@ -114,8 +114,8 @@ export default function InsightDetail() {
   useEffect(() => {
     if (!article) return undefined;
     const previousTitle = document.title;
-    const canonicalUrl = `${window.location.origin}/insights/${article.slug}`;
-    document.title = article.seo.title;
+    const canonicalUrl = absoluteUrl(`/insights/${article.slug}`);
+    document.title = `${article.seo.title} | RAPT & Co.`;
 
     const cleanups = [
       setMetaTag('meta[name="description"]', {
@@ -134,11 +134,44 @@ export default function InsightDetail() {
         property: "og:type",
         content: "article",
       }),
-      setMetaTag('meta[property="og:url"]', {
-        property: "og:url",
-        content: canonicalUrl,
+      setMetaTag('meta[name="twitter:title"]', {
+        name: "twitter:title",
+        content: article.seo.title,
+      }),
+      setMetaTag('meta[name="twitter:description"]', {
+        name: "twitter:description",
+        content: article.seo.description,
       }),
     ];
+    if (canonicalUrl) {
+      cleanups.push(
+        setMetaTag('meta[property="og:url"]', {
+          property: "og:url",
+          content: canonicalUrl,
+        }),
+      );
+    }
+
+    const jsonLd = document.createElement("script");
+    jsonLd.type = "application/ld+json";
+    jsonLd.textContent = JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Article",
+      headline: article.title,
+      description: article.seo.description,
+      articleSection: article.category,
+      publisher: { "@type": "Organization", name: "RAPT & Co." },
+      ...(canonicalUrl ? { mainEntityOfPage: canonicalUrl } : {}),
+    });
+    document.head.appendChild(jsonLd);
+    cleanups.push(() => jsonLd.remove());
+
+    if (!canonicalUrl) {
+      return () => {
+        document.title = previousTitle;
+        cleanups.forEach((cleanup) => cleanup());
+      };
+    }
 
     let canonical = document.head.querySelector('link[rel="canonical"]');
     const canonicalCreated = !canonical;
@@ -228,6 +261,20 @@ export default function InsightDetail() {
     return () => context.revert();
   }, [article]);
 
+  useEffect(() => {
+    if (article) return undefined;
+    const previousTitle = document.title;
+    document.title = "Insight Not Found | RAPT & Co.";
+    const robots = document.createElement("meta");
+    robots.name = "robots";
+    robots.content = "noindex";
+    document.head.appendChild(robots);
+    return () => {
+      document.title = previousTitle;
+      robots.remove();
+    };
+  }, [article]);
+
   if (!article) {
     return (
       <div className="insight-detail insight-detail--missing">
@@ -243,12 +290,19 @@ export default function InsightDetail() {
     );
   }
 
-  const articleUrl = `${window.location.origin}/insights/${article.slug}`;
+  const articleUrl =
+    absoluteUrl(`/insights/${article.slug}`) ||
+    `${window.location.origin}/insights/${article.slug}`;
   const linkedInUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(articleUrl)}`;
-  const twitterUrl = `https://twitter.com/intent/tweet?url=${encodeURIComponent(articleUrl)}&text=${encodeURIComponent(article.title)}`;
 
   const copyLink = async () => {
-    await navigator.clipboard.writeText(articleUrl);
+    try {
+      await navigator.clipboard.writeText(articleUrl);
+    } catch {
+      // Clipboard API unavailable (e.g. insecure context): fall back to a prompt.
+      window.prompt("Copy this link:", articleUrl);
+      return;
+    }
     setCopied(true);
     window.setTimeout(() => setCopied(false), 1800);
   };
@@ -274,9 +328,11 @@ export default function InsightDetail() {
               <span className="insight-detail-hero__category">{article.category}</span>
               <h1>{article.title}</h1>
               <div className="insight-detail-hero__meta">
-                <span>{article.author}</span>
-                <time>{article.publishDate}</time>
-                <span><LuClock3 aria-hidden="true" /> {article.readingTime}</span>
+                {article.author ? <span>{article.author}</span> : null}
+                {article.publishDate ? <time>{article.publishDate}</time> : null}
+                {article.readingTime ? (
+                  <span><LuClock3 aria-hidden="true" /> {article.readingTime}</span>
+                ) : null}
               </div>
             </div>
           </header>
@@ -317,14 +373,6 @@ export default function InsightDetail() {
                     >
                       <FaLinkedinIn aria-hidden="true" />
                     </a>
-                    <a
-                      href={twitterUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      aria-label="Share on X"
-                    >
-                      <FaXTwitter aria-hidden="true" />
-                    </a>
                     <button type="button" onClick={copyLink} aria-label="Copy article link">
                       {copied ? <FaCheck aria-hidden="true" /> : <FaLink aria-hidden="true" />}
                     </button>
@@ -333,6 +381,9 @@ export default function InsightDetail() {
               </aside>
 
               <div className="insight-article__body insight-detail__stagger">
+                <span className="insight-copy-status" role="status" aria-live="polite">
+                  {copied ? "Link copied to clipboard." : ""}
+                </span>
                 {article.content
                   .filter((block) => block.type !== "quote")
                   .map((block, index) => (

@@ -418,3 +418,53 @@
 }
 
 /* Shared hero responsiveness */
+
+/* Form validation and submission feedback */
+.consultation-form__error {
+  margin-top: 8px;
+  color: #ffb4a3;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.consultation-form [aria-invalid="true"] {
+  border-bottom-color: #ff8f73;
+}
+
+.consultation-form button:disabled {
+  cursor: progress;
+  opacity: 0.75;
+  transform: none;
+}
+
+.consultation-form__status {
+  margin: 16px 0 0;
+  padding: 14px 16px;
+  border-radius: 6px;
+  color: #fff;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.consultation-form__status:empty {
+  display: none;
+}
+
+.consultation-form__status--success {
+  background: rgb(48 160 96 / 28%);
+  border: 1px solid rgb(120 220 160 / 55%);
+}
+
+.consultation-form__status--error {
+  background: rgb(203 103 36 / 22%);
+  border: 1px solid rgb(255 160 110 / 55%);
+}
+
+/* Honeypot: off-screen so people never see or tab into it */
+.consultation-form__honeypot {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}

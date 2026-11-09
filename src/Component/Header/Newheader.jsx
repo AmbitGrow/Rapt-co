@@ -52,6 +52,15 @@ export default function Newheader() {
   }, []);
 
   useEffect(() => {
+    if (!isMenuOpen) return undefined;
+    const closeOnEscape = (event) => {
+      if (event.key === "Escape") setIsMenuOpen(false);
+    };
+    document.addEventListener("keydown", closeOnEscape);
+    return () => document.removeEventListener("keydown", closeOnEscape);
+  }, [isMenuOpen]);
+
+  useEffect(() => {
     if (!hash) return;
     document
       .getElementById(hash.slice(1))

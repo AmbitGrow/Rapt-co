@@ -364,12 +364,11 @@ export default function Aboutpage() {
                   BUILDING A FUTURE WHERE CONFIDENCE DRIVES EVERY DECISION.
                 </p>
                 <p className="purpose-card__description">
-                  RAPT &amp; Co. envisions a future where businesses make every
-                  decision with confidence through trusted governance,
-                  proactive compliance, and technology-enabled advisory. We
-                  strive to become the long-term strategic partner
-                  organizations rely on as regulations evolve and opportunities
-                  grow.
+                  To be India&rsquo;s most trusted advisory firm in technology,
+                  taxation, and regulatory compliance &mdash; empowering
+                  organizations to operate with confidence, transparency, and
+                  resilience in an increasingly complex and digital business
+                  landscape.
                 </p>
               </article>
 
@@ -379,11 +378,13 @@ export default function Aboutpage() {
                   HELPING BUSINESSES NAVIGATE COMPLEXITY WITH CLARITY.
                 </p>
                 <p className="purpose-card__description">
-                  Our mission is to simplify complex regulatory environments by
-                  delivering integrated expertise across taxation, compliance,
-                  governance, cybersecurity, and privacy. Through practical
-                  guidance, integrity, and lasting partnerships, we empower
-                  organizations to grow with confidence.
+                  We are committed to delivering comprehensive, technology-driven
+                  compliance and advisory solutions that protect our clients&rsquo;
+                  interests and fuel their growth. Through deep expertise in DPDP
+                  Compliance, SOC &amp; Privacy Audits, Income Tax Representation,
+                  International Taxation, GST Appeals, and Governance, Risk &amp;
+                  Compliance (GRC), we serve as a single, accountable partner for
+                  every regulatory need.
                 </p>
               </article>
             </div>

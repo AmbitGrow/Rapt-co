@@ -6,7 +6,7 @@ import earthDay from "../../assets/earth/earth_day_2k.jpg";
 import earthNormal from "../../assets/earth/earth_normal_2k.jpg";
 import earthBump from "../../assets/earth/earth_bump_2k.jpg";
 import earthSpecular from "../../assets/earth/earth_specular_2k.jpg";
-import earthClouds from "../../assets/earth/earth_clouds_8k.webp";
+import earthClouds from "../../assets/earth/earth_clouds_2k.webp";
 import earthNight from "../../assets/earth/earth_night_2k.jpg";
 
 const earthTextures = {
@@ -192,6 +192,7 @@ export default function GlobeArtwork({ active = true }) {
         gl.shadowMap.enabled = true;
         gl.shadowMap.type = THREE.PCFSoftShadowMap;
       }}
+      role="img"
       aria-label="Interactive rotating three-dimensional Earth"
     >
       <ambientLight intensity={0.18} />

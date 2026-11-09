@@ -1,8 +1,8 @@
-import criticalInfrastructureImage from "../assets/insights/CriticalInfrastructure&Datasecurity.jpeg";
-import majorDataBreachImage from "../assets/insights/MajorDataBreach.jpeg";
-import rajeshSaiIyerImage from "../assets/insights/Rajeshs_Sai_Iyer.jpeg";
-import driCustomsImage from "../assets/insights/DRI_customs.jpeg";
-import howSchoolsImage from "../assets/insights/HowSchools.jpeg";
+import criticalInfrastructureImage from "../assets/insights/CriticalInfrastructure&Datasecurity.webp";
+import majorDataBreachImage from "../assets/insights/MajorDataBreach.webp";
+import rajeshSaiIyerImage from "../assets/insights/Rajeshs_Sai_Iyer.webp";
+import driCustomsImage from "../assets/insights/DRI_customs.webp";
+import howSchoolsImage from "../assets/insights/HowSchools.webp";
 
 export const insights = [
   {
@@ -372,6 +372,21 @@ export const insights = [
     ],
   },
 ];
+
+// Reading time is derived from the article text (about 200 words per minute).
+function estimateReadingTime(article) {
+  const text = article.content
+    .map((block) => [block.text, block.title, ...(block.items || [])].filter(Boolean).join(" "))
+    .join(" ");
+  const words = text.split(/\s+/).filter(Boolean).length;
+  return `${Math.max(1, Math.round(words / 200))} min read`;
+}
+
+insights.forEach((article) => {
+  if (!article.readingTime) article.readingTime = estimateReadingTime(article);
+});
+
+export const insightCategories = [...new Set(insights.map((article) => article.category))];
 
 export function getInsightBySlug(slug) {
   return insights.find((article) => article.slug === slug);
