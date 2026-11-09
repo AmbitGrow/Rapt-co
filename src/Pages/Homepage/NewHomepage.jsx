@@ -1,5 +1,6 @@
 import NewHeroSection from "../../Component/NewHeroSection/NewHeroSection";
 import homeBg from "../../assets/Herosection/1.webp";
+import homeBgPortrait from "../../assets/Herosection/1-portrait.webp";
 
 import Homepage from "./Homepage";
 import "./NewHomepage.css";
@@ -28,6 +29,7 @@ export default function NewHomepage() {
             download: true,
           }}
           backgroundImage={homeBg}
+          mobileBackgroundImage={homeBgPortrait}
           scrollTo="#experience-heading"
           id="homepage-hero-title"
         />

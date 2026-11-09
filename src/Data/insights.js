@@ -1,8 +1,12 @@
-import criticalInfrastructureImage from "../assets/insights/CriticalInfrastructure&Datasecurity.jpeg";
-import majorDataBreachImage from "../assets/insights/MajorDataBreach.jpeg";
-import rajeshSaiIyerImage from "../assets/insights/Rajeshs_Sai_Iyer.jpeg";
-import driCustomsImage from "../assets/insights/DRI_customs.jpeg";
-import howSchoolsImage from "../assets/insights/HowSchools.jpeg";
+import criticalInfrastructureImage from "../assets/insights/CriticalInfrastructure&Datasecurity.webp";
+import majorDataBreachImage from "../assets/insights/MajorDataBreach.webp";
+import rajeshSaiIyerImage from "../assets/insights/Rajeshs_Sai_Iyer.webp";
+import driCustomsImage from "../assets/insights/DRI_customs.webp";
+import howSchoolsImage from "../assets/insights/HowSchools.webp";
+import criticalInfrastructureImageCard from "../assets/insights/CriticalInfrastructure&Datasecurity-720.webp";
+import majorDataBreachImageCard from "../assets/insights/MajorDataBreach-720.webp";
+import driCustomsImageCard from "../assets/insights/DRI_customs-720.webp";
+import howSchoolsImageCard from "../assets/insights/HowSchools-720.webp";
 
 export const insights = [
   {
@@ -372,6 +376,34 @@ export const insights = [
     ],
   },
 ];
+
+// Reading time is derived from the article text (about 200 words per minute).
+function estimateReadingTime(article) {
+  const text = article.content
+    .map((block) => [block.text, block.title, ...(block.items || [])].filter(Boolean).join(" "))
+    .join(" ");
+  const words = text.split(/\s+/).filter(Boolean).length;
+  return `${Math.max(1, Math.round(words / 200))} min read`;
+}
+
+// 720px variants for cards (the article page keeps the full-size image).
+// Card variants: [720px image, width of the full-size original]. The article page keeps the full image.
+// (Rajeshs_Sai_Iyer is only 704px wide, so it needs no smaller variant.)
+const CARD_IMAGES = new Map([
+  [criticalInfrastructureImage, [criticalInfrastructureImageCard, 1080]],
+  [majorDataBreachImage, [majorDataBreachImageCard, 866]],
+  [driCustomsImage, [driCustomsImageCard, 934]],
+  [howSchoolsImage, [howSchoolsImageCard, 1080]],
+]);
+
+insights.forEach((article) => {
+  const [cardImage, fullWidth] = CARD_IMAGES.get(article.featuredImage) || [];
+  article.cardImage = cardImage || null;
+  article.featuredImageWidth = fullWidth || null;
+  if (!article.readingTime) article.readingTime = estimateReadingTime(article);
+});
+
+export const insightCategories = [...new Set(insights.map((article) => article.category))];
 
 export function getInsightBySlug(slug) {
   return insights.find((article) => article.slug === slug);

@@ -5,23 +5,59 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import NewHeroSection from "../../Component/NewHeroSection/NewHeroSection";
 import contactBg from "../../assets/Herosection/5.webp";
+import contactBgPortrait from "../../assets/Herosection/5-portrait.webp";
 import Footer from "../../Component/Footer/Footer";
 import { FrequentlyAskedQuestions } from "../Homepage/Homepage";
+import { services } from "../../Data/services";
+import {
+  CONTACT_EMAILS,
+  CONTACT_PHONE,
+  OFFICE_LOCATION,
+} from "../../Data/site";
 import "./Contactpage.css";
 
 gsap.registerPlugin(ScrollTrigger);
 
+const EMPTY_FORM = {
+  name: "",
+  email: "",
+  phone: "",
+  company: "",
+  service: "",
+  message: "",
+  website: "", // honeypot: hidden from people, filled in by bots
+};
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+const PHONE_PATTERN = /^\+?[\d\s()-]{7,20}$/;
+
+function validateForm(data) {
+  const errors = {};
+  if (!data.name.trim()) errors.name = "Please enter your name.";
+  if (!EMAIL_PATTERN.test(data.email.trim())) {
+    errors.email = "Please enter a valid email address.";
+  }
+  const digits = data.phone.replace(/\D/g, "");
+  if (
+    !PHONE_PATTERN.test(data.phone.trim()) ||
+    digits.length < 7 ||
+    digits.length > 15
+  ) {
+    errors.phone = "Please enter a valid phone number.";
+  }
+  if (!data.service) errors.service = "Please select a service.";
+  if (data.message.trim().length < 10) {
+    errors.message = "Please tell us a little more (at least 10 characters).";
+  }
+  return errors;
+}
+
 export default function Contactpage() {
   const location = useLocation();
   const getInTouchRef = useRef(null);
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    company: "",
-    service: "",
-    message: "",
-  });
+  const [formData, setFormData] = useState(EMPTY_FORM);
+  const [errors, setErrors] = useState({});
+  const [status, setStatus] = useState({ state: "idle", message: "" });
+  const startedAtRef = useRef(Date.now());
 
   useEffect(() => {
     if (location.hash !== "#get-in-touch") return undefined;
@@ -34,7 +70,7 @@ export default function Contactpage() {
     });
 
     return () => cancelAnimationFrame(frame);
-  }, [location.hash]);
+  }, [location.hash, location.key]);
 
   useLayoutEffect(() => {
     const context = gsap.context(() => {
@@ -68,11 +104,64 @@ export default function Contactpage() {
   const updateField = (event) => {
     const { name, value } = event.target;
     setFormData((current) => ({ ...current, [name]: value }));
+    if (errors[name]) {
+      setErrors((current) => {
+        const next = { ...current };
+        delete next[name];
+        return next;
+      });
+    }
   };
 
-  const submitConsultation = (event) => {
+  const submitConsultation = async (event) => {
     event.preventDefault();
+    if (status.state === "submitting") return;
+
+    const nextErrors = validateForm(formData);
+    setErrors(nextErrors);
+    if (Object.keys(nextErrors).length) {
+      setStatus({ state: "idle", message: "" });
+      document.getElementById(`consultation-${Object.keys(nextErrors)[0]}`)?.focus();
+      return;
+    }
+
+    setStatus({ state: "submitting", message: "" });
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...formData, startedAt: startedAtRef.current }),
+      });
+      const result = await response.json().catch(() => ({}));
+      if (!response.ok || !result.ok) {
+        if (result.errors) setErrors(result.errors);
+        throw new Error(result.error || "Request failed");
+      }
+      setFormData(EMPTY_FORM);
+      startedAtRef.current = Date.now();
+      setStatus({
+        state: "success",
+        message:
+          "Thank you. Your consultation request has been sent, and our team will get back to you shortly.",
+      });
+    } catch {
+      setStatus({
+        state: "error",
+        message: `We couldn't send your request right now. Please try again, or reach us directly at ${CONTACT_PHONE.display} or ${CONTACT_EMAILS[0]}.`,
+      });
+    }
   };
+
+  const fieldProps = (name) => ({
+    "aria-invalid": errors[name] ? true : undefined,
+    "aria-describedby": errors[name] ? `consultation-${name}-error` : undefined,
+  });
+  const fieldError = (name) =>
+    errors[name] ? (
+      <span className="consultation-form__error" id={`consultation-${name}-error`}>
+        {errors[name]}
+      </span>
+    ) : null;
 
   return (
     <>
@@ -91,6 +180,7 @@ export default function Contactpage() {
             download: true,
           }}
           backgroundImage={contactBg}
+          mobileBackgroundImage={contactBgPortrait}
           scrollTo="#faq-heading"
         />
 
@@ -120,23 +210,22 @@ export default function Contactpage() {
             <address className="get-in-touch__details">
               <div className="contact-detail">
                 <span>Phone</span>
-                <a href="tel:+919176884914">+91 91768 84914</a>
+                <a href={CONTACT_PHONE.href}>{CONTACT_PHONE.display}</a>
               </div>
 
               <div className="contact-detail">
                 <span>Email</span>
-                <a href="mailto:raptconsulting@gmail.com">
-                  raptconsulting@gmail.com
-                </a>
-                <a href="mailto:rapt.info1@gmail.com">
-                  rapt.info1@gmail.com
-                </a>
+                {CONTACT_EMAILS.map((email) => (
+                  <a href={`mailto:${email}`} key={email}>
+                    {email}
+                  </a>
+                ))}
               </div>
 
               <div className="contact-detail">
                 <span>Office</span>
                 <p>RAPT &amp; Co.</p>
-                <p>Chennai, Tamil Nadu, India</p>
+                <p>{OFFICE_LOCATION}</p>
                 <a
                   href="https://maps.google.com/?q=Chennai,Tamil+Nadu,India"
                   target="_blank"
@@ -148,12 +237,6 @@ export default function Contactpage() {
                     aria-hidden="true"
                   />
                 </a>
-              </div>
-
-              <div className="contact-detail">
-                <span>Working Hours</span>
-                <p>Monday – Friday</p>
-                <p>9:30 AM – 6:30 PM</p>
               </div>
             </address>
 
@@ -171,7 +254,21 @@ export default function Contactpage() {
               <form
                 className="consultation-form"
                 onSubmit={submitConsultation}
+                noValidate
+                aria-busy={status.state === "submitting"}
               >
+                <div className="consultation-form__honeypot" aria-hidden="true">
+                  <label htmlFor="consultation-website">Website</label>
+                  <input
+                    id="consultation-website"
+                    name="website"
+                    type="text"
+                    tabIndex={-1}
+                    autoComplete="off"
+                    value={formData.website}
+                    onChange={updateField}
+                  />
+                </div>
                 <div className="consultation-form__grid">
                   <div className="consultation-form__field">
                     <input
@@ -183,8 +280,10 @@ export default function Contactpage() {
                       value={formData.name}
                       onChange={updateField}
                       required
+                      {...fieldProps("name")}
                     />
                     <label htmlFor="consultation-name">Name</label>
+                    {fieldError("name")}
                   </div>
                   <div className="consultation-form__field">
                     <input
@@ -196,8 +295,10 @@ export default function Contactpage() {
                       value={formData.email}
                       onChange={updateField}
                       required
+                      {...fieldProps("email")}
                     />
                     <label htmlFor="consultation-email">Email</label>
+                    {fieldError("email")}
                   </div>
                   <div className="consultation-form__field">
                     <input
@@ -209,8 +310,10 @@ export default function Contactpage() {
                       value={formData.phone}
                       onChange={updateField}
                       required
+                      {...fieldProps("phone")}
                     />
                     <label htmlFor="consultation-phone">Phone Number</label>
+                    {fieldError("phone")}
                   </div>
                   <div className="consultation-form__field">
                     <input
@@ -235,17 +338,16 @@ export default function Contactpage() {
                     value={formData.service}
                     onChange={updateField}
                     required
+                    {...fieldProps("service")}
                   >
                     <option value="" disabled aria-label="Select a service" />
-                    <option>DPDPA Compliance</option>
-                    <option>SOC Audits</option>
-                    <option>Privacy Audits</option>
-                    <option>Income Tax</option>
-                    <option>GST</option>
-                    <option>International Taxation</option>
-                    <option>Governance Risk &amp; Compliance</option>
+                    {services.map((service) => (
+                      <option key={service.slug}>{service.title}</option>
+                    ))}
+                    <option>Other / Not sure</option>
                   </select>
                   <label htmlFor="consultation-service">Service</label>
+                    {fieldError("service")}
                 </div>
 
                 <div className="consultation-form__field consultation-form__message">
@@ -256,13 +358,25 @@ export default function Contactpage() {
                     value={formData.message}
                     onChange={updateField}
                     required
+                    {...fieldProps("message")}
                   />
                   <label htmlFor="consultation-message">
                     Tell us about yourself
                   </label>
+                  {fieldError("message")}
                 </div>
 
-                <button type="submit">Book My Consultation</button>
+                <button type="submit" disabled={status.state === "submitting"}>
+                  {status.state === "submitting" ? "Sending…" : "Book My Consultation"}
+                </button>
+
+                <p
+                  className={`consultation-form__status consultation-form__status--${status.state}`}
+                  role="status"
+                  aria-live="polite"
+                >
+                  {status.message}
+                </p>
               </form>
             </article>
           </div>

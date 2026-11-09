@@ -3,6 +3,11 @@ import { NavLink } from "react-router-dom";
 import gsap from "gsap";
 import "./NewHeroSection.css";
 
+// Portrait phones/tablets get a 3:4 crop of the same photo. The crop sits at the mobile
+// object-position (68%), so the visible area is pixel-identical, at roughly half the bytes.
+// Keep in sync with HERO_MOBILE_MEDIA in vite.config.js (used for the preload hint).
+export const HERO_MOBILE_MEDIA = "(max-width: 768px) and (max-aspect-ratio: 3/4)";
+
 function HeroAction({ action, variant }) {
   if (!action) return null;
   const className = `new-hero__button new-hero__button--${variant}`;
@@ -34,6 +39,7 @@ export default function NewHeroSection({
   primaryAction,
   secondaryAction,
   backgroundImage,
+  mobileBackgroundImage,
   scrollTo,
   id = "new-hero-title",
 }) {
@@ -69,14 +75,19 @@ export default function NewHeroSection({
 
   return (
     <section className="new-hero" aria-labelledby={id} ref={heroRef}>
-      <img
-        className="new-hero__background"
-        src={backgroundImage}
-        alt=""
-        aria-hidden="true"
-        fetchPriority="high"
-        decoding="async"
-      />
+      <picture>
+        {mobileBackgroundImage && (
+          <source media={HERO_MOBILE_MEDIA} srcSet={mobileBackgroundImage} />
+        )}
+        <img
+          className="new-hero__background"
+          src={backgroundImage}
+          alt=""
+          aria-hidden="true"
+          fetchPriority="high"
+          decoding="async"
+        />
+      </picture>
       <div className="new-hero__overlay" aria-hidden="true" />
 
       <div className="new-hero__content">

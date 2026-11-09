@@ -1,17 +1,19 @@
 import { lazy, memo, Suspense, useCallback, useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
-import clientBackground from "../../assets/Client_bg.webp";
 import articlesCardBackground from "../../assets/ArticlesCard.webp";
-import ctaBackground from "../../assets/CTA_section_bg.webp";
-import panIndiaImage from "../../assets/PanIndia.png";
-import technologyDrivenImage from "../../assets/Technology-driven.png";
-import oneFirmImage from "../../assets/one-firm.png";
-import quoteImage from "../../assets/Quote.png";
-import dpdpaIllustration from "../../assets/DPDPA_svg.webp";
-import socIllustration from "../../assets/SOC_svg.webp";
-import privacyIllustration from "../../assets/Privacy_svg.webp";
+import ctaBackground from "../../assets/CTA_section_bg_1920.webp";
+import panIndiaImage from "../../assets/PanIndia-200.webp";
+import technologyDrivenImage from "../../assets/Technology-driven-200.webp";
+import oneFirmImage from "../../assets/one-firm-200.webp";
+import dpdpaIllustration from "../../assets/DPDPA_svg_600.webp";
+import socIllustration from "../../assets/SOC_svg_600.webp";
+import privacyIllustration from "../../assets/Privacy_svg_600.webp";
 import expertiseArrow from "../../assets/Arrow.png";
 import Footer from "../../Component/Footer/Footer";
+import { insights } from "../../Data/insights";
+import { leadershipTeam } from "../../Data/leadership";
+import { serviceHref } from "../../Data/services";
 import "./Homepage.css";
 
 const GlobeArtwork = lazy(() => import("./GlobeArtwork"));
@@ -35,6 +37,7 @@ const advisoryServices = [
     tagline: "Secure Your Business Foundation",
     description: "Strengthen privacy, security, and compliance to reduce risk and build lasting stakeholder trust",
     theme: "protect",
+    href: serviceHref("dpdpa-compliance"),
     pills: ["DPDPA Compliance", "Privacy Audits", "SOC Audits"],
     metricLabel: "Risk Posture",
     metric: "Secure",
@@ -46,6 +49,7 @@ const advisoryServices = [
     tagline: "Build Strong Governance",
     description: "Establish effective controls, manage enterprise risks, and strengthen confident decision-making.",
     theme: "govern",
+    href: serviceHref("governance-risk-compliance"),
     pills: ["GRC Advisory", "Risk Management", "Internal Controls"],
     metricLabel: "Governance Score",
     metric: "87 %",
@@ -57,6 +61,7 @@ const advisoryServices = [
     tagline: "Enable Sustainable Growth",
     description: "Navigate taxation and regulatory complexity with strategic advisory that supports long-term business growth.",
     theme: "grow",
+    href: serviceHref("income-tax-services"),
     pills: ["Income Tax Advisory", "GST Services", "International Taxation"],
     metricLabel: "Growth Potential",
     metric: "High",
@@ -85,12 +90,12 @@ const whyRaptStories = [
 ];
 
 const expertiseServices = [
-  { title: "DPDPA Compliance", description: "We help organizations navigate India's landmark data privacy legislation with end-to-end compliance solutions, ensuring every regulatory obligation is met while building lasting digital trust.", theme: "blue", icon: "lock" },
-  { title: "SOC Audits", description: "Independent SOC attestation services that demonstrate your commitment to security, confidentiality, and operational excellence while building stakeholder trust.", theme: "orange", icon: "audit" },
-  { title: "Privacy Audits", description: "Independent assurance that your organization's data handling practices meet regulatory requirements and industry best practices.", theme: "green", icon: "privacy" },
-  { title: "Income Tax Services", description: "Strategic income tax planning, representation, assessments, appeals, international taxation, and dispute resolution.", theme: "blue", icon: "tax" },
-  { title: "GRC Advisory", description: "Integrated governance, risk, and compliance frameworks that strengthen oversight, improve controls, and support confident decisions.", theme: "green", icon: "grc" },
-  { title: "GST Advisory", description: "Practical GST compliance, advisory, audit support, and representation designed to reduce exposure and enable efficient operations.", theme: "orange", icon: "gst" },
+  { title: "DPDPA Compliance", slug: "dpdpa-compliance", description: "We help organizations navigate India's landmark data privacy legislation with end-to-end compliance solutions, ensuring every regulatory obligation is met while building lasting digital trust.", theme: "blue", icon: "lock" },
+  { title: "SOC Audits", slug: "soc-audits", description: "Independent SOC attestation services that demonstrate your commitment to security, confidentiality, and operational excellence while building stakeholder trust.", theme: "orange", icon: "audit" },
+  { title: "Privacy Audits", slug: "privacy-audits", description: "Independent assurance that your organization's data handling practices meet regulatory requirements and industry best practices.", theme: "green", icon: "privacy" },
+  { title: "Income Tax Services", slug: "income-tax-services", description: "Strategic income tax planning, representation, assessments, appeals, international taxation, and dispute resolution.", theme: "blue", icon: "tax" },
+  { title: "GRC Advisory", slug: "governance-risk-compliance", description: "Integrated governance, risk, and compliance frameworks that strengthen oversight, improve controls, and support confident decisions.", theme: "green", icon: "grc" },
+  { title: "GST Advisory", slug: "gst-services", description: "Practical GST compliance, advisory, audit support, and representation designed to reduce exposure and enable efficient operations.", theme: "orange", icon: "gst" },
 ];
 
 const expertiseImages = {
@@ -102,63 +107,32 @@ const expertiseImages = {
   gst: socIllustration,
 };
 
-const testimonials = [
-  { name: "Ravi Kumar", designation: "Chief Financial Officer", testimonial: "RAPT & Co. provided exceptional guidance throughout our compliance journey. Their structured approach and deep regulatory expertise helped us navigate complex requirements with confidence." },
-  { name: "Ravi Kumar", designation: "Operations Head", testimonial: "From the very first consultation, the RAPT & Co. team understood our organizational needs and delivered solutions tailored to our business. Their expertise across taxation, governance, and compliance enabled us to strengthen our internal processes while remaining focused on growth. Every interaction reflected professionalism, accountability, and a genuine commitment to delivering measurable value." },
-  { name: "Ravi Kumar", designation: "Finance Head", testimonial: "From taxation to governance advisory, RAPT & Co. served as a dependable strategic partner. Their technology-driven approach simplified what initially seemed like a complex process." },
-  { name: "Ravi Kumar", designation: "Chief Executive Officer", testimonial: "RAPT & Co. combines expertise, integrity, and responsiveness in every engagement. We value them as a trusted advisory partner for our ongoing regulatory and compliance needs." },
-  { name: "Ravi Kumar", designation: "Director", testimonial: "RAPT & Co. helped us navigate a complex regulatory landscape with remarkable clarity and confidence. Their ability to simplify technical compliance requirements into actionable business strategies made a significant impact on our operations. The team's attention to detail, transparent communication, and technology-driven approach ensured that every milestone was delivered efficiently." },
-  { name: "Ravi Kumar", designation: "Compliance Manager", testimonial: "Their practical advice and responsive support gave our leadership team the confidence to make timely decisions while maintaining robust compliance standards." },
+// Home/About "Insights & Resources" slider: real articles from src/Data/insights.js, each linking to its detail page.
+const FEATURED_ARTICLE_SLUGS = [
+  "rbi-draft-guidance-data-governance",
+  "schools-children-data-privacy",
+  "critical-infrastructure-data-security",
+  "directorate-revenue-intelligence-dri",
 ];
-
-const testimonialColumns = [
-  [testimonials[0], testimonials[1], testimonials[5]],
-  [testimonials[2], testimonials[3], testimonials[0]],
-  [testimonials[4], testimonials[5], testimonials[2]],
-];
-
-const featuredArticles = [
-  { title: "DPDPA Compliance", subtitle: "Preparing Your Business for India's Digital Personal Data Protection Act", description: "India's Digital Personal Data Protection Act is reshaping how organizations collect, process, and protect personal data. Learn the practical steps to strengthen governance, reduce compliance risks, implement privacy-first frameworks, and build long-term trust with customers, regulators, and stakeholders.", buttonText: "Read Articles", backgroundImage: articlesCardBackground },
-  { title: "Privacy Governance", subtitle: "Building Accountable, Privacy-First Organizations", description: "A practical guide to establishing ownership, controls, and repeatable privacy processes that keep pace with regulation while supporting responsible innovation and sustainable digital growth.", buttonText: "Read Articles", backgroundImage: articlesCardBackground },
-  { title: "Technology Risk", subtitle: "Strengthening Controls Across a Changing Digital Landscape", description: "Explore how modern risk frameworks help leadership teams identify technology exposure, strengthen internal controls, and translate complex requirements into clear operational priorities.", buttonText: "Read Articles", backgroundImage: articlesCardBackground },
-  { title: "Regulatory Readiness", subtitle: "Turning Compliance Change Into Business Confidence", description: "Learn how an integrated regulatory readiness program can reduce uncertainty, improve response times, and create resilient processes that support confident decisions across the enterprise.", buttonText: "Read Articles", backgroundImage: articlesCardBackground },
-];
-
-const leadershipTeam = [
-  { name: "CMA Pavithra Mucherla", designation: "Managing Partner · Taxation, Cybersecurity & GRC", image: "https://i.pravatar.cc/300?img=47", description: "Specializes in Income Tax & GST litigation, DPDPA Compliance, SOC & Privacy Audits, Governance, Risk & Compliance (GRC), IS Audits, and Cybersecurity Advisory with extensive experience across banking, financial services, telecom, healthcare, and technology sectors.", expertise: ["Income Tax & GST Appeals", "DPDPA Compliance", "SOC & Privacy Audits", "IS Audits", "Cybersecurity", "Governance, Risk & Compliance"] },
-  { name: "CMA Rajesh Sai Iyer", designation: "Partner · Cost Audit & Regulatory Advisory", image: "https://i.pravatar.cc/300?img=12", description: "Advises organizations on cost audit, regulatory reporting, operational controls, and performance frameworks, helping leadership teams improve transparency, accountability, and long-term financial resilience.", expertise: ["Cost Audit", "Regulatory Advisory", "Internal Controls", "Performance Management", "Compliance Reviews"] },
-  { name: "CMA A. Vadivel", designation: "Partner · CFO Advisory & Finance Transformation", image: "https://i.pravatar.cc/300?img=11", description: "Leads CFO advisory and finance transformation engagements spanning strategic planning, reporting, process optimization, financial controls, and decision support for growing organizations.", expertise: ["CFO Advisory", "Finance Transformation", "Strategic Planning", "Financial Controls", "Management Reporting"] },
-  { name: "CMA T.A. Venkitasubramanian", designation: "Partner · Corporate Finance & Strategic Advisory", image: "https://i.pravatar.cc/300?img=13", description: "Brings deep experience in corporate finance, business strategy, valuation, and transaction advisory, supporting organizations through complex decisions and sustainable growth initiatives.", expertise: ["Corporate Finance", "Strategic Advisory", "Valuation", "Transaction Support", "Business Planning"] },
-];
+const featuredArticles = FEATURED_ARTICLE_SLUGS
+  .map((slug) => insights.find((article) => article.slug === slug))
+  .filter(Boolean)
+  .map((article) => ({
+    slug: article.slug,
+    title: article.category,
+    subtitle: article.title,
+    description: article.excerpt,
+    backgroundImage: articlesCardBackground,
+  }));
 
 const faqs = [
-  { question: "What services does RAPT & Co. provide?", answer: "RAPT & Co. offers integrated advisory services across DPDPA Compliance, SOC Audits, Privacy Audits, Income Tax, GST Advisory, Governance, Risk & Compliance (GRC), Enterprise Risk Management, Internal Controls, and Regulatory Consulting." },
-  { question: "Which industries do you serve?", answer: "We work with organizations across manufacturing, banking & financial services, healthcare, technology, telecom, professional services, and other highly regulated industries." },
-  { question: "Are engagements led by senior professionals?", answer: "Yes. Every engagement is led by experienced advisors with deep expertise across taxation, governance, compliance, privacy, cybersecurity, and enterprise risk." },
-  { question: "Do you serve clients across India?", answer: "Yes. RAPT & Co. provides advisory and compliance services to organizations across India, supporting businesses of different sizes and sectors." },
-  { question: "How do you protect confidential information?", answer: "We follow strict confidentiality practices, secure data handling procedures, and professional ethical standards throughout every client engagement." },
-  { question: "Do you handle tax and regulatory representation?", answer: "Yes. Our team assists clients with income tax representation, GST litigation, appeals, regulatory advisory, and compliance support before relevant authorities." },
+  { question: "What services does RAPT & Co. provide?", answer: "Our six principal practices are DPDPA Compliance, SOC Audits, Privacy Audits, Income Tax Services (including International Taxation and appellate representation), GST Services (including GST Appeals and GSTAT representation), and Governance, Risk & Compliance (GRC). We also offer DRI Services, CEPA Services, Project Finance and Fund Arrangement Services, and RPA (Robotic Process Automation) Services." },
+  { question: "Which industries do you serve?", answer: "Our team has delivered results across regulated and non-regulated sectors, from banking and financial services to manufacturing, healthcare, telecom, and technology, working with MNCs, SMEs, and high-growth enterprises." },
+  { question: "Are engagements led by senior professionals?", answer: "Yes. Engagements are senior-led, drawing on 20+ years of hands-on expertise in cost accounting, taxation, and compliance, and are not delegated to junior staff." },
+  { question: "Do you serve clients across India?", answer: "Yes. We are based in Chennai, and our national network ensures seamless service wherever you do business." },
+  { question: "How do you protect confidential information?", answer: "Every engagement follows our Trust & Safeguard Framework: a Non-Disclosure Agreement executed before any data exchange, conflict of interest screening, encrypted data transfers with restricted access and retention/destruction policies aligned with DPDPA standards, a formal engagement letter, and multi-level quality review with partner sign-off." },
+  { question: "Do you handle tax and regulatory representation?", answer: "Yes. We represent clients in income tax matters before CIT (Appeals), ITAT, and DRP, in GST appeals before the GST Appellate Tribunal (GSTAT), and in other litigation, appeals, and dispute resolution before the relevant forums." },
 ];
-
-const TestimonialCard = memo(function TestimonialCard({ testimonial }) {
-  return (
-    <article className="testimonial-card">
-      <header className="testimonial-card__profile">
-        <span className="testimonial-card__avatar" role="img" aria-label={`${testimonial.name} profile placeholder`} />
-        <div><h3>{testimonial.name}</h3><p>{testimonial.designation}</p></div>
-        <img
-          className="testimonial-card__quote"
-          src={quoteImage}
-          alt=""
-          aria-hidden="true"
-          loading="lazy"
-          decoding="async"
-        />
-      </header>
-      <p className="testimonial-card__text">{testimonial.testimonial}</p>
-    </article>
-  );
-});
 
 export function InsightsResources() {
   const [activeArticle, setActiveArticle] = useState(0);
@@ -202,7 +176,7 @@ export function InsightsResources() {
                         <p className="featured-article-card__subtitle">{item.subtitle}</p>
                         <p className="featured-article-card__description">{item.description}</p>
                       </div>
-                      <a href="#featured-article"><span>{item.buttonText}</span><span aria-hidden="true">↗</span></a>
+                      <Link to={`/insights/${item.slug}`} tabIndex={index === activeArticle ? undefined : -1} aria-label={`Read article: ${item.subtitle}`}><span>Read Article</span><span aria-hidden="true">↗</span></Link>
                     </div>
                   </div>
                 ))}
@@ -233,12 +207,12 @@ export function LeadershipTeam() {
             <p>Behind every confident business decision is a team of experienced advisors committed to protecting, governing, and growing your organization.</p>
           </header>
 
-          <div className="leadership-team__selector" role="list" aria-label="Leadership team members">
+          <div className="leadership-team__selector" aria-label="Leadership team members">
             {leadershipTeam.map((leader, index) => (
-              <button type="button" className={index === activeLeader ? "is-active" : ""} onClick={() => setActiveLeader(index)} aria-pressed={index === activeLeader} role="listitem" key={leader.name}>
-                <img src={leader.image} alt={`${leader.name}, ${leader.designation}`} loading="lazy" decoding="async" />
+              <button type="button" className={index === activeLeader ? "is-active" : ""} onClick={() => setActiveLeader(index)} aria-pressed={index === activeLeader} key={leader.name}>
+                <img src={leader.image} alt="" loading="lazy" decoding="async" width="70" height="70" />
                 <span className="leadership-team__selector-name">{leader.name}</span>
-                <span className="leadership-team__selector-role">{leader.designation}</span>
+                <span className="leadership-team__selector-role">{leader.qualifications}</span>
               </button>
             ))}
           </div>
@@ -250,13 +224,18 @@ export function LeadershipTeam() {
               {leadershipTeam.map((leader, index) => (
                 <div className={`leadership-profile__slide ${index === activeLeader ? "is-active" : ""}`} aria-hidden={index !== activeLeader} key={leader.name}>
                   <header className="leadership-profile__header">
-                    <img src={leader.image} alt={`${leader.name} profile`} loading="lazy" decoding="async" />
-                    <div><h3>{leader.name}</h3><p>{leader.designation}</p></div>
+                    <img src={leader.image} alt={`Portrait of ${leader.name}`} loading="lazy" decoding="async" width="120" height="120" />
+                    <div><h3>{leader.name}</h3><p>{leader.qualifications}</p></div>
                   </header>
-                  <p className="leadership-profile__description">{leader.description}</p>
-                  <h4>Key Expertise :</h4>
-                  <div className="leadership-profile__expertise">
-                    {leader.expertise.map((item) => <span key={item}>{item}</span>)}
+                  <div className="leadership-profile__body" tabIndex={index === activeLeader ? 0 : -1} aria-label={`${leader.name} profile details`}>
+                    {leader.sections.map((section) => (
+                      <section className="leadership-profile__section" key={section.heading}>
+                        <h4>{section.heading}</h4>
+                        <ul>
+                          {section.points.map((point) => <li key={point}>{point}</li>)}
+                        </ul>
+                      </section>
+                    ))}
                   </div>
                 </div>
               ))}
@@ -313,7 +292,7 @@ export const CallToAction = memo(function CallToAction({
         <h2 id="cta-heading">{heading}</h2>
         <p>{description}</p>
         <div className="cta-section__button-glow">
-          <a href="/contact#get-in-touch">Book a Consultation</a>
+          <Link to="/contact#get-in-touch">Book a Consultation</Link>
         </div>
       </div>
     </section>
@@ -440,12 +419,12 @@ function HorizontalCarousel({ items }) {
                 decoding="async"
               />
             </div>
-            <a
-              href={`#${service.icon}`}
+            <Link
+              to={serviceHref(service.slug)}
               aria-label={`Learn more about ${service.title}`}
             >
               <img src={expertiseArrow} alt="" aria-hidden="true" loading="lazy" decoding="async" />
-            </a>
+            </Link>
           </article>
         ))}
       </div>
@@ -455,6 +434,7 @@ function HorizontalCarousel({ items }) {
 
 export default function Homepage({ hero = null }) {
   const globeHostRef = useRef(null);
+  const advisoryRef = useRef(null);
   const [shouldRenderGlobe, setShouldRenderGlobe] = useState(false);
   const [isGlobeVisible, setIsGlobeVisible] = useState(false);
 
@@ -469,14 +449,53 @@ export default function Homepage({ hero = null }) {
       return undefined;
     }
 
+    // The globe (three.js + ~2 MB of textures) only starts loading after the visitor's first
+    // scroll or interaction, so it no longer competes with the initial page load.
+    let observer;
+    const interactionEvents = ["scroll", "wheel", "pointerdown", "touchstart", "keydown"];
+    const removeInteractionListeners = () =>
+      interactionEvents.forEach((type) => window.removeEventListener(type, start));
+    function start() {
+      removeInteractionListeners();
+      if (observer) return;
+      import("./GlobeArtwork"); // warm the chunk while the section scrolls into view
+      observer = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) setShouldRenderGlobe(true);
+          setIsGlobeVisible(entry.isIntersecting);
+        },
+        { rootMargin: "400px 0px" },
+      );
+      observer.observe(host);
+    }
+    interactionEvents.forEach((type) =>
+      window.addEventListener(type, start, { passive: true }),
+    );
+    if (window.scrollY > 0) start();
+    return () => {
+      removeInteractionListeners();
+      observer?.disconnect();
+    };
+  }, []);
+
+  // Below-the-fold card artwork (CSS backgrounds) is applied only once the section is
+  // within 600px of the viewport, so it no longer competes with the initial load.
+  useEffect(() => {
+    const section = advisoryRef.current;
+    if (!section) return undefined;
+    if (!("IntersectionObserver" in window)) {
+      section.classList.add("is-near");
+      return undefined;
+    }
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) setShouldRenderGlobe(true);
-        setIsGlobeVisible(entry.isIntersecting);
+        if (!entry.isIntersecting) return;
+        section.classList.add("is-near");
+        observer.disconnect();
       },
-      { rootMargin: "400px 0px" },
+      { rootMargin: "600px 0px" },
     );
-    observer.observe(host);
+    observer.observe(section);
     return () => observer.disconnect();
   }, []);
 
@@ -538,7 +557,7 @@ export default function Homepage({ hero = null }) {
         <div className="experience__container">
           <div className="experience__wrapper">
             <div className="experience__left">
-              <h1 id="experience-heading" className="experience__heading">Built on Experience.<br />Trusted by Expertise.</h1>
+              <h2 id="experience-heading" className="experience__heading">Built on Experience.<br />Trusted by Expertise.</h2>
               <figure className="experience__visual" ref={globeHostRef}>
                 {shouldRenderGlobe ? (
                   <Suspense fallback={null}>
@@ -576,7 +595,7 @@ export default function Homepage({ hero = null }) {
         </div>
       </section>
 
-      <section className="advisory-philosophy" aria-labelledby="advisory-heading">
+      <section className="advisory-philosophy" aria-labelledby="advisory-heading" ref={advisoryRef}>
         <div className="advisory-philosophy__container">
           <header className="advisory-philosophy__header">
             <div className="advisory-philosophy__title-group">
@@ -600,7 +619,7 @@ export default function Homepage({ hero = null }) {
                   <div className="advisory-panel__glass">
                     <header className="advisory-panel__header">
                       <h4>{service.title}</h4>
-                      <button type="button" className="advisory-panel__menu" aria-label={`Open ${service.title} options`}><span /><span /><span /></button>
+                      <span className="advisory-panel__menu" aria-hidden="true"><span /><span /><span /></span>
                     </header>
 
                     <div className="advisory-panel__pills">
@@ -610,7 +629,12 @@ export default function Homepage({ hero = null }) {
                     <div className="advisory-panel__metric">
                       {service.theme === "protect" ? (
                         <div className="advisory-panel__protect-metric">
-                          <div className="advisory-panel__gauge"><strong>92%</strong><small>Compliance<br />Readiness</small></div>
+                          <div className="advisory-panel__gauge">
+                            <svg className="advisory-panel__gauge-ring" viewBox="0 0 120 120" aria-hidden="true">
+                              <circle className="advisory-panel__gauge-track" cx="60" cy="60" r="53" />
+                              <circle className="advisory-panel__gauge-arc" cx="60" cy="60" r="53" pathLength="100" />
+                            </svg>
+                            <strong>92%</strong><small>Compliance<br />Readiness</small></div>
                           <div><span>{service.metricLabel}</span><strong>{service.metric}</strong><small><i />{service.status}</small></div>
                         </div>
                       ) : (
@@ -620,7 +644,7 @@ export default function Homepage({ hero = null }) {
                       )}
                     </div>
 
-                    <a className="advisory-panel__cta" href={`#${service.theme}`}><span>Learn more</span><span aria-hidden="true">→</span></a>
+                    <Link className="advisory-panel__cta" to={service.href} aria-label={`Learn more about ${service.title}: ${service.pills.join(", ")}`}><span>Learn more</span><span aria-hidden="true">→</span></Link>
                   </div>
                 </div>
               </article>
@@ -665,31 +689,6 @@ export default function Homepage({ hero = null }) {
             <p className="our-expertise__intro">We deliver technology-driven compliance and advisory solutions across privacy, taxation, governance, risk management, and regulatory compliance—helping organizations operate with confidence in an increasingly complex business environment.</p>
           </header>
           <HorizontalCarousel items={expertiseServices} />
-        </div>
-      </section>
-
-      <section className="client-testimonials" aria-labelledby="testimonials-heading">
-        <img className="client-testimonials__background" src={clientBackground} alt="" aria-hidden="true" loading="lazy" decoding="async" />
-        <div className="client-testimonials__container">
-          <header className="client-testimonials__header">
-            <span className="client-testimonials__label">CLIENT TESTIMONIALS</span>
-            <h2 id="testimonials-heading">Hear From Our Happy Clients</h2>
-            <p>Client success stories and testimonials will be featured here as our<br className="client-testimonials__desktop-break" /> partnerships continue to grow.</p>
-          </header>
-
-          <div className="testimonial-columns" aria-label="Client testimonials">
-            {testimonialColumns.map((column, columnIndex) => (
-              <div className={`testimonial-column testimonial-column--${columnIndex % 2 === 1 ? "up" : "down"}`} key={`testimonial-column-${columnIndex}`}>
-                <div className="testimonial-column__track">
-                  {[0, 1].map((duplicateIndex) => (
-                    <div className="testimonial-column__set" aria-hidden={duplicateIndex === 1} key={duplicateIndex}>
-                      {column.map((testimonial, cardIndex) => <TestimonialCard testimonial={testimonial} key={`${duplicateIndex}-${cardIndex}`} />)}
-                    </div>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
         </div>
       </section>
 

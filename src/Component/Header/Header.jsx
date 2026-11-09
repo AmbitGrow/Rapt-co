@@ -37,7 +37,8 @@ export default function Header() {
             {navigation.map((item) => (
               <NavLink
                 className={() => (
-                  `${location.pathname}${location.hash}` === item.to
+                  location.pathname === item.to ||
+                  location.pathname.startsWith(`${item.to}/`)
                     ? "is-active"
                     : ""
                 )}
