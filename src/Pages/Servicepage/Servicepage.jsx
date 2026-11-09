@@ -286,7 +286,8 @@ export default function Servicepage() {
                     <div
                       className="service-accordion__panel"
                       id={panelId}
-                      aria-hidden={!isOpen}
+                      // inert: collapsed panels are out of the tab order and accessibility tree
+                      inert={!isOpen}
                     >
                       <div className="service-accordion__panel-inner">
                         <p className="service-accordion__service-description">
