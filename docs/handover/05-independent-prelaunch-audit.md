@@ -43,13 +43,13 @@ Branch: `audit/rapt-prelaunch-corrections-20261109` in local QA copy `~/AmbitGro
 3. `src/Pages/Homepage/Homepage.jsx`: update the experience stat from six integrated practices to **ten advisory services**; show approved GRC and GST service titles on featured cards.
 4. `src/Component/Header/Newheader.jsx`: replace misleading **Book Demo** copy with **Book a Consultation** and add an accessible label to the visually letter-spaced logo.
 
-Static content assertions and `git diff --check` passed. Full production build, Lighthouse and responsive visual checks for this amended branch are **still needed** because the QA checkout deliberately excludes large assets to avoid changing the original workspace.
+Source assertions and Git whitespace checks passed. Full tracked assets were restored without changing the original repository. Dependency installation, Vite production build and the production dependency audit (zero known vulnerabilities) passed. The 21-case local Puppeteer smoke test (7 routes at 1440/768/390 px) rendered without observed JavaScript errors, horizontal overflow or failed images. HTTP 304s on repeated locally cached visits were expected and are not release failures. Lighthouse and deployed Preview checks remain pending.
 
 ## Issues requiring targeted final pass
 
 **P1 — before final client approval**
 - [ ] Review the prepared branch; compare the client-approved source content against every service bullet and benefit, preserving the original wording.
-- [ ] Resolve unsupported homepage illustrative scores (e.g. **92% Compliance Readiness** and **87% Governance Score**). Do not present invented numbers as real client outcomes.
+- [x] Replaced unsupported homepage illustrative scores (92% Compliance Readiness / 87% Governance Score) with descriptive advisory-focus labels; removed the decorative progress arc. Corrected locally, awaiting deployed Preview validation.
 - [ ] Deploy a controlled Preview of the reviewed fixes, verify longer service/CTA labels do not wrap or overflow, then check all routes including mobile, tablet and article refresh.
 - [ ] Configure the agreed Resend sender and recipient securely in the client's chosen hosting environment. Make **one clearly labelled test enquiry**, verify inbox receipt, reply-to and Resend Delivered status; do not use genuine visitor information for QA.
 - [ ] Verify that no placeholder links, testimonials or inactive submission forms remain; check all four original leadership photographs.
