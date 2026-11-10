@@ -10,6 +10,5 @@ export const CONTACT_EMAILS = ["raptconsulting@gmail.com", "rapt.info1@gmail.com
 
 export const OFFICE_LOCATION = "Chennai, Tamil Nadu, India";
 
-// Official company LinkedIn page. Not supplied by the client yet. The footer shows the
-// LinkedIn icon only once this is set, e.g. "https://www.linkedin.com/company/<handle>/".
-export const COMPANY_LINKEDIN_URL = "";
+// Official RAPT & Co. LinkedIn URL supplied and approved by the client.
+export const COMPANY_LINKEDIN_URL = "https://www.linkedin.com/in/r-a-p-t-co-6126613b9/";

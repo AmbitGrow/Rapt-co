@@ -39,9 +39,9 @@ const advisoryServices = [
     theme: "protect",
     href: serviceHref("dpdpa-compliance"),
     pills: ["DPDPA Compliance", "Privacy Audits", "SOC Audits"],
-    metricLabel: "Risk Posture",
-    metric: "Secure",
-    status: "Strong",
+    metricLabel: "Advisory Focus",
+    metric: "Privacy",
+    status: "Compliance & Assurance",
   },
   {
     number: "[ 2 ]",
@@ -51,9 +51,9 @@ const advisoryServices = [
     theme: "govern",
     href: serviceHref("governance-risk-compliance"),
     pills: ["GRC Advisory", "Risk Management", "Internal Controls"],
-    metricLabel: "Governance Score",
-    metric: "87 %",
-    status: "Improving",
+    metricLabel: "Advisory Focus",
+    metric: "Controls",
+    status: "Governance & Risk",
   },
   {
     number: "[ 3 ]",
@@ -63,9 +63,9 @@ const advisoryServices = [
     theme: "grow",
     href: serviceHref("income-tax-services"),
     pills: ["Income Tax Advisory", "GST Services", "International Taxation"],
-    metricLabel: "Growth Potential",
-    metric: "High",
-    status: "Positive Outlook",
+    metricLabel: "Advisory Focus",
+    metric: "Taxation",
+    status: "Planning & Representation",
   },
 ];
 
@@ -94,8 +94,8 @@ const expertiseServices = [
   { title: "SOC Audits", slug: "soc-audits", description: "Independent SOC attestation services that demonstrate your commitment to security, confidentiality, and operational excellence while building stakeholder trust.", theme: "orange", icon: "audit" },
   { title: "Privacy Audits", slug: "privacy-audits", description: "Independent assurance that your organization's data handling practices meet regulatory requirements and industry best practices.", theme: "green", icon: "privacy" },
   { title: "Income Tax Services", slug: "income-tax-services", description: "Strategic income tax planning, representation, assessments, appeals, international taxation, and dispute resolution.", theme: "blue", icon: "tax" },
-  { title: "GRC Advisory", slug: "governance-risk-compliance", description: "Integrated governance, risk, and compliance frameworks that strengthen oversight, improve controls, and support confident decisions.", theme: "green", icon: "grc" },
-  { title: "GST Advisory", slug: "gst-services", description: "Practical GST compliance, advisory, audit support, and representation designed to reduce exposure and enable efficient operations.", theme: "orange", icon: "gst" },
+  { title: "Governance, Risk & Compliance (GRC)", slug: "governance-risk-compliance", description: "Integrated governance, risk, and compliance frameworks that strengthen oversight, improve controls, and support confident decisions.", theme: "green", icon: "grc" },
+  { title: "GST Services", slug: "gst-services", description: "Practical GST compliance, advisory, audit support, and representation designed to reduce exposure and enable efficient operations.", theme: "orange", icon: "gst" },
 ];
 
 const expertiseImages = {
@@ -572,7 +572,7 @@ export default function Homepage({ hero = null }) {
 
               <dl className="experience__statistics">
                 <div className="experience__stat"><dd>20 +</dd><dt>Years of Experience</dt></div>
-                <div className="experience__stat"><dd>6</dd><dt>Integrated Advisory Practices</dt></div>
+                <div className="experience__stat"><dd>10</dd><dt>Advisory Services</dt></div>
               </dl>
 
               <div className="experience__features">
@@ -632,9 +632,8 @@ export default function Homepage({ hero = null }) {
                           <div className="advisory-panel__gauge">
                             <svg className="advisory-panel__gauge-ring" viewBox="0 0 120 120" aria-hidden="true">
                               <circle className="advisory-panel__gauge-track" cx="60" cy="60" r="53" />
-                              <circle className="advisory-panel__gauge-arc" cx="60" cy="60" r="53" pathLength="100" />
                             </svg>
-                            <strong>92%</strong><small>Compliance<br />Readiness</small></div>
+                            <strong>Risk</strong><small>Assessment</small></div>
                           <div><span>{service.metricLabel}</span><strong>{service.metric}</strong><small><i />{service.status}</small></div>
                         </div>
                       ) : (

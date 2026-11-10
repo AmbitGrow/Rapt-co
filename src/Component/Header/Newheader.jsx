@@ -69,7 +69,7 @@ export default function Newheader() {
 
   return (
     <header className={`new-header${isMenuOpen ? " is-menu-open" : ""}`}>
-      <NavLink className="new-header__logo" to="/" onClick={closeMenu}>
+      <NavLink className="new-header__logo" to="/" onClick={closeMenu} aria-label="RAPT & Co.">
         R A P T &amp; CO
       </NavLink>
 
@@ -109,7 +109,7 @@ export default function Newheader() {
           to="/contact#get-in-touch"
           onClick={closeMenu}
         >
-          Book Demo
+          Book a Consultation
         </NavLink>
       </div>
 

@@ -34,12 +34,12 @@ export const services = [
     "title": "Privacy Audits",
     "description": "Our privacy audit services provide independent assurance that your organization’s data handling practices meet regulatory requirements and industry best practices — protecting your reputation and your stakeholders’ trust.",
     "items": [
-      "Privacy Framework Assessment — Evaluate policies and procedures against GDPR, DPDPA, ISO 27701, and other global privacy standards",
+      "Privacy Framework Assessment — Evaluate policies and procedures against GDPR, DPDPA, ISO 27001, and other global privacy standards",
       "Data Processing & Lifecycle Audit — End-to-end review of data collection, storage, processing, retention, and deletion practices",
       "Third-Party & Vendor Privacy Risk — Assess vendor data handling, contractual safeguards, and supply chain privacy compliance",
       "Privacy-by-Design Reviews — Embed privacy principles into product development, system architecture, and business processes",
       "Employee Awareness & Culture Assessment — Evaluate organizational privacy awareness and recommend training programs",
-      "Certification-Ready Audits — Prepare your organization for ISO 27701, SOC 2 Privacy, and other privacy certifications"
+      "Certification-Ready Audits — Prepare your organization for ISO 27001, SOC 2 Privacy, and other privacy certifications"
     ]
   },
   {
