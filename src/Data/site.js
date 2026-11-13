@@ -5,8 +5,9 @@ export const COMPANY_NAME = "RAPT & Co.";
 
 export const CONTACT_PHONE = { display: "+91 91768 84914", href: "tel:+919176884914" };
 
-// Both addresses appear in the deck; neither has been confirmed as the primary one.
-export const CONTACT_EMAILS = ["raptconsulting@gmail.com", "rapt.info1@gmail.com"];
+// Client-confirmed single public and consultation enquiry address (13 Nov 2026).
+export const PRIMARY_CONTACT_EMAIL = "info@theraptconsulting.com";
+export const CONTACT_EMAILS = [PRIMARY_CONTACT_EMAIL];
 
 export const OFFICE_LOCATION = "Chennai, Tamil Nadu, India";
 

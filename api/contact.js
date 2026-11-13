@@ -1,9 +1,11 @@
+import { PRIMARY_CONTACT_EMAIL } from "../src/Data/site.js";
+
 // Vercel serverless function: POST /api/contact
 // Sends consultation requests by email through the Resend REST API (https://resend.com).
 //
 // Required environment variables (set in Vercel → Project → Settings → Environment Variables):
 //   RESEND_API_KEY      Resend API key (server-side only, never exposed to the browser)
-//   CONTACT_TO_EMAIL    Recipient address(es), comma-separated
+//   Recipient is fixed to the client-approved PRIMARY_CONTACT_EMAIL in src/Data/site.js
 // Optional:
 //   CONTACT_FROM_EMAIL  Verified sender, e.g. "RAPT & Co. Website <website@yourdomain.com>"
 //                       (defaults to Resend's test sender, which only delivers to the account owner)
@@ -129,9 +131,9 @@ ${data.message}`;
   if (sentAt && Date.now() - sentAt < DUPLICATE_WINDOW_MS) return send(res, 200, { ok: true, duplicate: true });
 
   const apiKey = env.RESEND_API_KEY;
-  const to = String(env.CONTACT_TO_EMAIL || "").split(",").map((item) => item.trim()).filter(Boolean);
-  if (!apiKey || !to.length) {
-    console.error("[contact] RESEND_API_KEY or CONTACT_TO_EMAIL is not configured.");
+  const to = [PRIMARY_CONTACT_EMAIL];
+  if (!apiKey) {
+    console.error("[contact] RESEND_API_KEY is not configured.");
     return send(res, 503, { ok: false, error: "The contact service is not configured yet." });
   }
 

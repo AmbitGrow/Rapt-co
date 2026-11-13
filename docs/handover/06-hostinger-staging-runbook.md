@@ -44,9 +44,9 @@ If any deployment setting is missing or named differently, inspect the Hostinger
 
 ## 3. Enquiry email — separate release gate
 
-After the staging website passes static and navigation QA, confirm the correct recipient address with the client and confirm Resend domain/sender verification. Then set these **server-side** runtime variables in hPanel's Environment Variables screen:
+After the staging website passes static and navigation QA, use the approved single recipient info@theraptconsulting.com and confirm Resend domain/sender verification. Then set these **server-side** runtime variables in hPanel's Environment Variables screen:
 - `RESEND_API_KEY`: valid, secret Resend key
-- `CONTACT_TO_EMAIL`: explicitly approved test/live recipient(s)
+- Recipient: fixed in code to info@theraptconsulting.com; no runtime recipient variable
 - `CONTACT_FROM_EMAIL`: verified sender, e.g. `RAPT & Co. Website <website@theraptconsulting.com>` **only if verified and approved**
 
 Do **not** place secrets in `VITE_*` variables, commit `.env` files, or rely on Resend's test sender as evidence of delivery to the client's inbox.
