@@ -8,7 +8,7 @@
 ## 1. Architecture
 
 The React/Vite frontend is still built with `npm run build` into `dist/`.
-The new Express entry file `server/index.js`:
+Hostinger's `server/index.js` calls listen() unconditionally (also when imported by a loader), while the testable Express app is in `server/app.js`:
 - serves Vite's static assets, the 20-page company PDF, and SPA deep links;
 - handles `POST /api/contact` through the **same** existing validation, anti-spam and Resend logic in `api/contact.js`;
 - limits contact JSON request bodies to 16 KB and rejects invalid JSON without sending mail;

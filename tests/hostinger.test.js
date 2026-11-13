@@ -1,7 +1,7 @@
 import { after, before, test } from "node:test";
 import assert from "node:assert/strict";
 import { readdirSync } from "node:fs";
-import app from "../server/index.js";
+import app from "../server/app.js";
 
 process.env.RAPT_STAGING = "true";
 

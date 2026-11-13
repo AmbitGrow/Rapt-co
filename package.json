@@ -9,7 +9,7 @@
     "lint": "oxlint",
     "preview": "vite preview",
     "start": "node server/index.js",
-    "test:hostinger": "node --test tests/hostinger.test.js"
+    "test:hostinger": "node --test tests/*.test.js"
   },
   "dependencies": {
     "@react-three/drei": "^10.7.7",
