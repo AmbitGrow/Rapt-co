@@ -810,3 +810,14 @@
 .insight-categories:focus-within .insight-categories__track {
   animation-play-state: paused;
 }
+
+/* Mobile/tablet type scale: long article titles were 24-27px on ~230px-wide cards (4-5 lines). */
+@media (max-width: 991px) {
+  .insights-section-heading h2,
+  .insights-newsletter__card h2,
+  .insights-final-cta__card h2 { font-size: var(--type-section); line-height: var(--type-heading-leading); }
+  .featured-insight__content h3 { font-size: var(--type-subheading); }
+  .insight-card__content h3,
+  .trending-card h3,
+  .resource-card h3 { font-size: var(--type-card); }
+}

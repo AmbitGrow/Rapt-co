@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef, useState } from "react";
+import { useLayoutEffect, useRef, useState, useSyncExternalStore } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import NewHeroSection from "../../Component/NewHeroSection/NewHeroSection";
@@ -14,6 +14,16 @@ import purposeBackground from "../../assets/Client_bg.webp";
 import "./Aboutpage.css";
 
 gsap.registerPlugin(ScrollTrigger);
+
+// Below this width the journey timeline is vertical and each stage's content sits under its marker.
+const JOURNEY_COMPACT_QUERY = "(max-width: 767px)";
+const subscribeJourneyCompact = (onChange) => {
+  const query = window.matchMedia(JOURNEY_COMPACT_QUERY);
+  query.addEventListener("change", onChange);
+  return () => query.removeEventListener("change", onChange);
+};
+const getJourneyCompact = () => window.matchMedia(JOURNEY_COMPACT_QUERY).matches;
+const getJourneyCompactServer = () => false;
 
 const journeyStages = [
   {
@@ -220,6 +230,29 @@ export default function Aboutpage() {
   };
 
   const activeJourneyContent = journeyStages[activeJourneyStage];
+  const isJourneyCompact = useSyncExternalStore(
+    subscribeJourneyCompact,
+    getJourneyCompact,
+    getJourneyCompactServer,
+  );
+
+  const journeyContent = (
+    <article
+      className="our-journey__content"
+      ref={journeyContentRef}
+      aria-live="polite"
+    >
+      <h3 className="our-journey__stage-title">
+        {activeJourneyContent.title}
+      </h3>
+      <p className="our-journey__stage-subtitle">
+        {activeJourneyContent.subtitle}
+      </p>
+      <p className="our-journey__stage-description">
+        {activeJourneyContent.description}
+      </p>
+    </article>
+  );
 
   return (
     <>
@@ -270,7 +303,7 @@ export default function Aboutpage() {
           <header className="our-journey__header">
            <div><span className="our-journey__label">OUR JOURNEY</span></div> 
             <div><h2 className="our-journey__title" id="our-journey-title">
-              A Journey of Experience, Trust,
+              A Journey of Experience, Trust,{" "}
               <br />
               and Strategic Advisory
             </h2></div>
@@ -309,26 +342,15 @@ export default function Aboutpage() {
                     Stage {String(index + 1).padStart(2, "0")}
                   </button>
                   <span className="journey-timeline__dot" aria-hidden="true" />
+                  {isJourneyCompact && activeJourneyStage === index
+                    ? journeyContent
+                    : null}
                 </li>
               ))}
             </ol>
           </nav>
 
-          <article
-            className="our-journey__content"
-            ref={journeyContentRef}
-            aria-live="polite"
-          >
-            <h3 className="our-journey__stage-title">
-              {activeJourneyContent.title}
-            </h3>
-            <p className="our-journey__stage-subtitle">
-              {activeJourneyContent.subtitle}
-            </p>
-            <p className="our-journey__stage-description">
-              {activeJourneyContent.description}
-            </p>
-          </article>
+          {isJourneyCompact ? null : journeyContent}
         </section>
 
         <section
