@@ -570,3 +570,11 @@
   clip: rect(0 0 0 0);
   white-space: nowrap;
 }
+
+/* Mobile/tablet type scale: the article title was 39px (7 lines) at 320px. */
+@media (max-width: 991px) {
+  .insight-detail-hero h1 { font-size: var(--type-hero); line-height: 1.15; letter-spacing: -.03em; }
+  .insight-article__body > h2,
+  .insight-takeaways h2 { font-size: clamp(24px, 1.5vw + 19.2px, 32px); line-height: 1.25; }
+  .insight-detail__section-heading h2 { font-size: var(--type-section); line-height: var(--type-heading-leading); }
+}
