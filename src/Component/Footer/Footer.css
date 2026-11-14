@@ -105,3 +105,11 @@
   .site-footer__socials { justify-content: center; }
   .site-footer__links { align-items: center; }
 }
+
+/* Touch: move part of the link gap into padding so each link is a 32px tap target
+   while the visible spacing stays the same (20px text + 6px + 6px + 8px gap). */
+@media (max-width: 991px) {
+  .site-footer__links { gap: 8px; }
+  .site-footer__links h3 { margin-bottom: 9px; }
+  .site-footer__links a { padding-block: 6px; }
+}

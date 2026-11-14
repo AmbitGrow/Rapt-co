@@ -575,8 +575,18 @@ body { margin: 0; }
 
 @media (max-width: 1024px) {
   .insights-resources { padding-block: 110px; }
-  .insights-resources__content { flex-direction: column; align-items: stretch; gap: 45px; }
-  .featured-articles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); min-width: 0; }
+  .insights-resources__content { flex-direction: column; align-items: stretch; gap: 32px; margin-top: 40px; }
+  .featured-articles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px 24px; min-width: 0; margin-top: 0; }
+  .featured-articles button { width: 100%; padding-block: 7px; white-space: nowrap; text-align: left; }
+
+  /* Stacked layout: the 742px flex-basis would become the card's height, and the fixed
+     287px slides clip longer copy. Stack all slides in one grid cell and crossfade, so
+     the card sizes to its tallest article. */
+  .featured-article-card { flex: 0 0 auto; height: auto; }
+  .featured-article-card__track { display: grid; transform: none; will-change: auto; }
+  .featured-article-card__slide { grid-area: 1 / 1; height: auto; min-height: 287px; }
+  .featured-article-card__slide:not(.is-active) { pointer-events: none; }
+  .featured-article-card__content { gap: 24px; }
 }
 
 @media (max-width: 768px) {
@@ -592,9 +602,10 @@ body { margin: 0; }
   .insights-resources { padding: 72px 20px; }
   .insights-resources__header h2 { font-size: 38px; }
   .insights-resources__header p { margin-top: 15px; font-size: 16px; }
-  .insights-resources__content { margin-top: 55px; }
+  .insights-resources__content { margin-top: 28px; gap: 28px; }
   .featured-articles button { font-size: 16px; }
   .featured-article-card { border-radius: 20px; }
+  .featured-article-card__slide { min-height: 0; }
   .featured-article-card__content { padding: 24px; }
   .featured-article-card a { left: 24px; bottom: 24px; }
 }
@@ -1022,6 +1033,27 @@ body { margin: 0; }
   font-size: clamp(34px, 4vw, 65px);
 }
 
+/* Desktop line-heights are fixed at 80px; keep them proportional once the headings shrink. */
+@media (max-width: 1199px) {
+  .advisory-philosophy__heading,
+  .why-rapt__heading,
+  .our-expertise__heading,
+  .insights-resources__header h2,
+  .leadership-team__header h2,
+  .faq-section__header h2 { line-height: var(--type-heading-leading); }
+}
+
+@media (max-width: 991px) {
+  .experience__heading,
+  .advisory-philosophy__heading,
+  .why-rapt__heading,
+  .our-expertise__heading,
+  .insights-resources__header h2,
+  .leadership-team__header h2,
+  .faq-section__header h2,
+  .cta-section h2 { font-size: var(--type-section); line-height: var(--type-heading-leading); }
+}
+
 .experience__intro,
 .advisory-philosophy__intro,
 .why-rapt__intro,
@@ -1061,7 +1093,10 @@ body { margin: 0; }
 
   .advisory-philosophy__cards,
   .why-rapt__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
 
+/* Side-by-side range only; at <=1024px the column layout sizes the card (see Insights block). */
+@media (min-width: 1025px) and (max-width: 1199px) {
   .featured-article-card { flex: 1 1 620px; width: min(100%, 742px); }
 }
 
@@ -1097,7 +1132,6 @@ body { margin: 0; }
   .experience-card:nth-child(3) { width: 100%; }
 
   .featured-articles { grid-template-columns: 1fr; }
-  .featured-article-card { width: 100%; max-width: 742px; }
 }
 
 @media (max-width: 419px) {

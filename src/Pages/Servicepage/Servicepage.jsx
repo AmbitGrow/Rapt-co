@@ -236,9 +236,9 @@ export default function Servicepage() {
                 className="service-expertise__title"
                 id="service-expertise-title"
               >
-                Comprehensive
+                Comprehensive{" "}
                 <br />
-                Advisory
+                Advisory{" "}
                 <br />
                 Services.
               </h2>

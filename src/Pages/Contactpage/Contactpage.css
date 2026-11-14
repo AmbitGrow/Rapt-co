@@ -389,9 +389,11 @@
 @media (max-width: 1199px) {
   .get-in-touch { padding-top: 96px; padding-bottom: 96px; }
   .get-in-touch__layout { gap: 56px; }
+  .get-in-touch__title { line-height: var(--type-heading-leading); }
 }
 
 @media (max-width: 991px) {
+  .get-in-touch__title { font-size: var(--type-section); }
   .get-in-touch__layout { flex-direction: column; }
   .get-in-touch__details,
   .consultation-card { width: 100%; }

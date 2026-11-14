@@ -16,6 +16,14 @@ body {
   --layout-gutter: 20px;
   --layout-max: 1620px;
   --section-space: clamp(84px, 8.75vw, 140px);
+
+  /* Mobile/tablet type scale (320px -> 991px). Only referenced inside max-width media
+     queries, so desktop sizes stay defined per component. */
+  --type-hero: clamp(30px, 3vw + 20.4px, 44px);
+  --type-section: clamp(28px, 1.8vw + 22.2px, 40px);
+  --type-subheading: clamp(20px, 1.2vw + 16.2px, 26px);
+  --type-card: clamp(19px, 0.6vw + 17px, 22px);
+  --type-heading-leading: 1.22;
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -40,10 +48,6 @@ button, a, input, select, textarea {
 @media (min-width: 992px) { :root { --layout-gutter: 56px; } }
 @media (min-width: 1200px) { :root { --layout-gutter: 70px; } }
 @media (min-width: 1440px) { :root { --layout-gutter: 85px; } }
-
-@media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
-}
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }

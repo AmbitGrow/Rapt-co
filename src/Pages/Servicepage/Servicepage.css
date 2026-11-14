@@ -836,3 +836,20 @@
 .service-accordion__benefits strong {
   font-weight: 600;
 }
+
+/* Mobile/tablet type scale. The 65px desktop headings (with forced line breaks) were never
+   reduced, so "Comprehensive" overflowed and was clipped on phones. */
+@media (max-width: 991px) {
+  .service-expertise__title,
+  .service-approach__title,
+  .service-industries__title {
+    max-width: 20em;
+    font-size: var(--type-section);
+    line-height: var(--type-heading-leading);
+  }
+  .service-expertise__title br { display: none; }
+  .service-expertise__title { margin-bottom: 20px; }
+  .service-expertise__label { margin-bottom: 24px; }
+  .service-expertise__description { max-width: 36em; }
+  .chapter-content h3 { font-size: clamp(24px, 1.8vw + 18.2px, 32px); line-height: 1.25; }
+}
