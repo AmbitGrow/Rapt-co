@@ -54,7 +54,7 @@ Production (https://rapt-co.vercel.app, `040281a`):
 | # | Item | Why it matters | What is needed |
 |---|---|---|---|
 | A1 | **Official LinkedIn URL** | Footer shows no social link until provided | The company page URL |
-| A2 | **Primary enquiry recipient** | Decides where consultation emails go | Choose `raptconsulting@gmail.com`, `rapt.info1@gmail.com`, both, or another address |
+| A2 | **Primary enquiry recipient** | Single client-approved enquiry inbox | Confirmed: info@theraptconsulting.com (13 Nov 2026) |
 | A3 | **Production domain** | Canonical URLs, sitemap, professional sender address | The domain, plus access to its DNS |
 | A4 | **DRI terminology** | Expertise says "DRI = Documentation, Registration and Regulatory Interface" (services portfolio); the Insights article says "Directorate of Revenue Intelligence" | Confirm which is intended, or whether both are offered |
 | A5 | **Homepage dashboard figures** | The Protect/Govern panels show "92% Compliance Readiness" and "87% Governance Score", design mock-ups not sourced from client material | Approve as illustrative, or supply/remove |
@@ -65,7 +65,7 @@ Production (https://rapt-co.vercel.app, `040281a`):
 
 | # | Item | Owner | Blocks |
 |---|---|---|---|
-| I1 | Resend account, verified sending domain, and `RESEND_API_KEY` / `CONTACT_TO_EMAIL` / `CONTACT_FROM_EMAIL` in Vercel (Production + Preview) | RAPT & Co. / AmbitGrow | **Email delivery: no enquiry can reach RAPT & Co. until this is done and tested** |
+| I1 | Resend account and verified sending domain; RESEND_API_KEY and approved CONTACT_FROM_EMAIL in Hostinger runtime | RAPT & Co. / AmbitGrow | Delivery to info@theraptconsulting.com still requires live test |
 | I2 | Real test enquiry on a Preview, confirmed received | AmbitGrow, with RAPT & Co.'s agreement | Sign-off of the consultation system |
 | I3 | Push `final-audit`, review its Preview, merge to `main` | AmbitGrow (needs authorisation) | Deploying the section 2 fixes |
 | I4 | Vercel Preview settings for all branches (`final-delivery` never got a Preview) | Vercel project owner | Reliable review of future changes |
@@ -79,3 +79,7 @@ Production (https://rapt-co.vercel.app, `040281a`):
 - The audit fixes, including the API hardening, are not yet deployed (I3).
 
 Once I1–I3 are done, the website is ready for handover. The remaining items (A1–A7, I4–I6) are content or ownership decisions that do not block operation.
+
+## Update — 13 November 2026
+
+The client has confirmed info@theraptconsulting.com as the sole published contact email and sole consultation enquiry recipient. Hostinger staging is active on the existing Business Web Hosting plan; PR #4 contains the adapter. Earlier historical status rows about Vercel, draft content and example recipient addresses should not be treated as current release instructions. The latest setup is in 06-hostinger-staging-runbook.md and 07-final-staging-qa.md.

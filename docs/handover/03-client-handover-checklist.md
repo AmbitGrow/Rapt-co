@@ -40,7 +40,7 @@ Status key: ✅ done · ⏳ needs action · ❓ needs a decision
 | Variable | Status | Owner / action |
 |---|---|---|
 | `RESEND_API_KEY` | ❓ unknown | Not verifiable from outside Vercel. Create in the RAPT & Co. Resend account and add to Vercel (Production + Preview) |
-| `CONTACT_TO_EMAIL` | ❓ | RAPT & Co. to choose the enquiry inbox. The profile lists both `raptconsulting@gmail.com` and `rapt.info1@gmail.com`; both can be entered, comma-separated |
+| Consultation recipient | ✅ confirmed | Fixed in application to info@theraptconsulting.com; there is no configurable recipient environment variable |
 | `CONTACT_FROM_EMAIL` | ⏳ | Needs a sending address on a domain verified in Resend (normally the production domain) |
 | `VITE_SITE_URL` | ⏳ | Set once the domain is confirmed |
 
@@ -82,3 +82,7 @@ Names and descriptions are in `.env.example`.
 5. If spam increases, add Cloudflare Turnstile to the form and a shared rate-limit store.
 6. Consider adding a Content-Security-Policy header after go-live (needs testing against the inline scripts and the 3D globe).
 7. Keep at least two people with admin access to GitHub, Vercel, Resend and the domain registrar.
+
+## Update — 13 November 2026
+
+RAPT's current hosting plan is Hostinger Business Web Hosting, with a separate staging Web App (draft PR #4). The approved single public and consultation email is info@theraptconsulting.com. Hostinger requires RESEND_API_KEY and an approved, Resend-verified CONTACT_FROM_EMAIL to enable email sending. Earlier Vercel-specific steps are historical and superseded by 06-hostinger-staging-runbook.md.
