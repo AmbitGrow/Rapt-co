@@ -43,3 +43,14 @@ Client-approved only address: **info@theraptconsulting.com**
 7. Approve PR #4 for merge only after deployment and mail checks. Production domain DNS/SSL/SEO/canonical setup is a separate release task, with RAPT_STAGING=false.
 
 **Current status:** Hostinger runtime and functional smoke tests passed. Updated email source is locally tested. Actual email delivery and final approval remain pending.
+
+## PR #5 responsive integration — 14 November 2026
+
+Merged GitHub main at 17298bf (PR #5, "Final responsive improvements for mobile and tablet") into the isolated Hostinger deployment branch via merge commit 0e4ed7f. The responsive PR changed ten frontend CSS/JSX files; no host runtime, contact recipient, or approved PDF content was overwritten.
+
+Local post-merge verification:
+- npm ci, npm run lint, npm run build and npm audit --omit=dev --audit-level=moderate: passed (zero known production dependency vulnerabilities).
+- npm run test:hostinger: 12 of 12 passed, including startup, contact API, approved single-recipient and security checks.
+- Headless Chrome through local Express host: 11 routes across 320, 390, 767, 768, 1024 and 1440 px: **66/66 route checks** with no reported page-wide horizontal overflow, failed images, JS page errors or broken HTTP navigation. HTTP 304 on repeated local cache validation was expected.
+- About-page journey controls: 6 of 6 interaction checks passed after allowing the GSAP 0.8-second transition to finish. On widths 320, 390 and 767 px the active stage content appeared inside its selected timeline item; at 768, 1024 and 1440 px it stayed outside the timeline. No horizontal overflow observed.
+- Live Hostinger deployment of these latest responsive changes remains a **separate verification** after pushing and redeploying the branch; these 66 + 6 checks are for local production build served by Express, not proof of the latest Hostinger release.
