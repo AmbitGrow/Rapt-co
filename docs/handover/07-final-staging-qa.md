@@ -54,3 +54,27 @@ Local post-merge verification:
 - Headless Chrome through local Express host: 11 routes across 320, 390, 767, 768, 1024 and 1440 px: **66/66 route checks** with no reported page-wide horizontal overflow, failed images, JS page errors or broken HTTP navigation. HTTP 304 on repeated local cache validation was expected.
 - About-page journey controls: 6 of 6 interaction checks passed after allowing the GSAP 0.8-second transition to finish. On widths 320, 390 and 767 px the active stage content appeared inside its selected timeline item; at 768, 1024 and 1440 px it stayed outside the timeline. No horizontal overflow observed.
 - Live Hostinger deployment of these latest responsive changes remains a **separate verification** after pushing and redeploying the branch; these 66 + 6 checks are for local production build served by Express, not proof of the latest Hostinger release.
+
+
+## Independent staging review and hardening — 19 November 2026
+
+Baseline: Hostinger temporary site https://darkslateblue-owl-219432.hostingersite.com/ ; deployment branch head a68adc48c3b53ac634256e1c8d03a789400c8fd8 before the local hardening changes below. PR #4 remains unmerged.
+
+### Live evidence (supersedes older pending statements)
+- Client-owned Resend domain verified. User supplied screenshots of a successful labelled consultation submission, Resend Delivered status, receipt in info@theraptconsulting.com Hostinger inbox and reply received at the submitter's mailbox. End-to-end email workflow passed on staging.
+- Five main and linked article route checks, direct refresh, 18/18 rendered article scroll/body checks, 7/7 anchor checks, mobile form validation and responsive checks passed. Earlier 33 route/width checks (plus narrow/wide additional principal-page checks) had no reported overflow. All ten services and 88 description/scope/benefit entries matched approved DOCX ignoring whitespace.
+- Profile PDF valid and downloadable; source/deployed PDF matched by checksum. **P1: approved 17-slide source vs existing 20-page PDF and associated leadership qualification discrepancy awaits client confirmation. Sabarish explicitly instructed retaining the 20-page PDF and leadership content for now. No change made.**
+- Existing Hostinger MX/SPF preserved; Resend DNS verification completed. Do not modify mail records during domain connection.
+- Lighthouse 13.6.0, actual Hostinger staging, mobile/desktop performance: Home 96/100, Expertise 97/100, Insights 97/100, About 93/93, Contact 97/100. Best practices 100/100 in all ten successful runs. Mobile LCP 2.30–2.58 s. Accessibility baseline Home 100/100, Expertise 95/95, Insights 100/100, About 96/96, Contact 100/100. SEO 63–66 on staging; intentional noindex and production canonical/sitemap not yet active. Raw JSON in /tmp/rapt-lighthouse.qyANUX on reviewer device (temporary, not committed).
+- Representative article Lighthouse runs returned NO_FCP / CHROME_INTERSTITIAL_ERROR with no valid score; independent browser recheck returned HTTP 200 and rendered title/body. Article performance metrics remain unverified.
+
+### Locally implemented (not yet deployed)
+- Contact API now uses validated rightmost forwarded IP per Hostinger CDN guidance, socket fallback, bounded per-IP history, in-flight duplicate suppression, successful-only deduplication, retry on provider failure, and logs provider status without response payload. Before changes mock reproduction: 6/6 requests with spoofed first IP generated email attempts; 2 simultaneous identical submissions generated 2 attempts. Four mock regression tests added; no real email sent. Rate limiting and deduplication remain best-effort per process. Verify trusted edge headers/direct-origin exposure; distributed abuse controls are not guaranteed.
+- Corrected header accessible name, About timeline text contrast, Expertise animation-induced low contrast, and industry numbering contrast without changing approved page layout or hero. Local Chrome/axe targeted contrast and label-content-name-mismatch checks on Home, Expertise, About at 390 and 1440 px: 6/6 with zero reported violations, no horizontal overflow; incomplete image/background contrast checks still require manual review. Not a full WCAG conformance statement.
+- Final local build successful; lint zero warnings/errors, git diff --check clean; 16/16 host integration and mock contact abuse tests passed. Previous production dependency audit zero reported vulnerabilities. PDF and leadership copy unchanged.
+
+### Release gates
+1. Review and push the local hardening changes to the deployment branch, redeploy Hostinger staging and confirm deployed commit. Repeat targeted browser checks and representative article Lighthouse; confirm current production-like contact delivery with a single labelled test as needed.
+2. Obtain client disposition of P1 and final staging approval. No final approval or production deployment claimed.
+3. On approved production cutover, set VITE_SITE_URL=https://theraptconsulting.com at build time and RAPT_STAGING=false only for production; preserve server-only Resend configuration. Verify apex/www redirect, valid TLS, production indexability, canonical/Open Graph, robots.txt and sitemap (earlier local production build emitted 11 URLs), all direct article routes, PDF, and form delivery. Preserve Hostinger mail DNS.
+4. Final QA signoff, client acceptance, PR #4 merge only when authorized; handover, invoice and separate commercial closure.

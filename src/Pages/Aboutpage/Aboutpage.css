@@ -258,21 +258,20 @@
   padding: 0;
   border: 0;
   border-radius: 0;
-  color: #fff;
-  background: #e9772b;
+  color: #1f1e1e;
+  background: #f4bb95;
   font: inherit;
   font-size: 18px;
   font-weight: 500;
   text-align: center;
-  opacity: 0.5;
   cursor: pointer;
-  transition: opacity 220ms ease;
+  transition: background-color 220ms ease;
 }
 
 .journey-timeline__button:hover,
 .journey-timeline__button:focus-visible,
 .journey-timeline__button.is-active {
-  opacity: 1;
+  background: #e9772b;
 }
 
 .journey-timeline__button:focus-visible {
