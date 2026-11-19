@@ -142,7 +142,7 @@
   align-items: center;
   gap: 12px 22px;
   margin-top: 30px;
-  color: #777;
+  color: #666;
   font-size: 13px;
 }
 
@@ -444,7 +444,7 @@
 }
 
 .trending-card__number {
-  color: #c2c2c2;
+  color: #858585;
   font-size: 58px;
   font-weight: 300;
   line-height: 1;
@@ -486,7 +486,7 @@
 
 .case-card > span,
 .case-card dt {
-  color: #777;
+  color: #666;
   font-size: 12px;
   font-weight: 500;
   letter-spacing: .08em;
