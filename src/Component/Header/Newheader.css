@@ -48,7 +48,7 @@
 .new-header__logo {
   justify-self: start;
   color: #fff;
-  font-size: 22px;
+  font-size: 30px;
   font-weight: 600;
   white-space: nowrap;
 }
@@ -205,7 +205,7 @@
 
 @media (max-width: 576px) {
   .new-header__logo {
-    font-size: 20px;
+    font-size: 24px;
   }
 }
 

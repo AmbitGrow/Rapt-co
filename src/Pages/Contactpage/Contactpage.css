@@ -80,7 +80,7 @@
 
 .contact-detail > span {
   margin-bottom: 4px;
-  color: #939393;
+  color: #666;
   font-size: 18px;
   font-weight: 400;
   line-height: 30px;
@@ -120,7 +120,7 @@
 }
 .contact-detail:nth-child(3) a:last-child:hover {
   transform: translateX(4px);
-  color: #cb6724;
+  color: #ad531b;
 }
 .contact-detail__map-icon {
   width: 25px;
@@ -224,7 +224,7 @@
 .consultation-form input:focus,
 .consultation-form select:focus,
 .consultation-form textarea:focus {
-  border-bottom-color: #cb6724;
+  border-bottom-color: #f2a268;
 }
 
 .consultation-form input:focus + label,
@@ -233,7 +233,7 @@
 .consultation-form textarea:not(:placeholder-shown) + label,
 .consultation-form select:focus + label,
 .consultation-form select:valid + label {
-  color: #cb6724;
+  color: #f2a268;
   transform: translate3d(0, -28px, 0) scale(0.7222);
 }
 
@@ -261,7 +261,7 @@
   margin-top: auto;
   border: 0;
   color: #fff;
-  background: #cb6724;
+  background: #ad531b;
   font: inherit;
   font-size: 18px;
   font-weight: 500;
@@ -272,7 +272,7 @@
 }
 
 .consultation-form button:hover {
-  background: #b65a1f;
+  background: #9f4915;
   transform: translateY(-2px);
 }
 

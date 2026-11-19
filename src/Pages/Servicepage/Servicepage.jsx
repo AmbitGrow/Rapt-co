@@ -125,21 +125,7 @@ export default function Servicepage() {
     const context = gsap.context(() => {
       const chapters = gsap.utils.toArray(".approach-chapter");
 
-      const setActiveChapter = (activeIndex) => {
-        gsap.to(chapters, {
-          opacity: (index) =>
-            index < activeIndex ? 0.5 : index === activeIndex ? 1 : 0.7,
-          duration: 0.5,
-          ease: "power2.out",
-          overwrite: "auto",
-        });
-      };
-
-      gsap.set(chapters, {
-        opacity: (index) => (index === 0 ? 1 : 0.7),
-      });
-
-      chapters.forEach((chapter, index) => {
+      chapters.forEach((chapter) => {
         const number = chapter.querySelector(".chapter-number");
         const label = chapter.querySelector(".chapter-label");
         const title = chapter.querySelector("h3");
@@ -165,21 +151,20 @@ export default function Servicepage() {
           )
           .fromTo(
             label,
-            { autoAlpha: 0.3, y: 20 },
-            { autoAlpha: 1, y: 0, duration: 0.5, ease: "power2.out" },
+            { y: 20 },
+            { y: 0, duration: 0.5, ease: "power2.out" },
             "-=0.3",
           )
           .fromTo(
             title,
-            { autoAlpha: 0.3, y: 20 },
-            { autoAlpha: 1, y: 0, duration: 0.5, ease: "power2.out" },
+            { y: 20 },
+            { y: 0, duration: 0.5, ease: "power2.out" },
             "-=0.3",
           )
           .fromTo(
             description,
-            { autoAlpha: 0.3, y: 20 },
+            { y: 20 },
             {
-              autoAlpha: 1,
               y: 0,
               duration: 0.5,
               delay: 0.2,
@@ -188,13 +173,6 @@ export default function Servicepage() {
             "-=0.3",
           );
 
-        ScrollTrigger.create({
-          trigger: chapter,
-          start: "top center",
-          end: "bottom center",
-          onEnter: () => setActiveChapter(index),
-          onEnterBack: () => setActiveChapter(index),
-        });
       });
     }, approachRef);
 

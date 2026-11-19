@@ -193,3 +193,7 @@ vercel dev        # full local stack including /api/contact (needs Vercel CLI lo
 **Deployments:** every push to `main` deploys to production. Pushes to other branches create Preview deployments on Vercel. Use a branch and a pull request, check the Preview, then merge.
 
 **Content updates** (services, articles, contacts) are code changes: edit the file under `src/Data/`, open a pull request, check the Preview, merge.
+
+## Update — 13 November 2026
+
+The active Hostinger Node.js staging implementation (server/index.js, server/app.js) reuses api/contact.js. The enquiry recipient is fixed in src/Data/site.js to info@theraptconsulting.com and CONTACT_TO_EMAIL is no longer used by the current handler. Email delivery still requires RESEND_API_KEY and a sender verified with Resend. For current deployment details, see 06-hostinger-staging-runbook.md.

@@ -1,9 +1,12 @@
+import { isIP } from "node:net";
+import { PRIMARY_CONTACT_EMAIL } from "../src/Data/site.js";
+
 // Vercel serverless function: POST /api/contact
 // Sends consultation requests by email through the Resend REST API (https://resend.com).
 //
 // Required environment variables (set in Vercel → Project → Settings → Environment Variables):
 //   RESEND_API_KEY      Resend API key (server-side only, never exposed to the browser)
-//   CONTACT_TO_EMAIL    Recipient address(es), comma-separated
+//   Recipient is fixed to the client-approved PRIMARY_CONTACT_EMAIL in src/Data/site.js
 // Optional:
 //   CONTACT_FROM_EMAIL  Verified sender, e.g. "RAPT & Co. Website <website@yourdomain.com>"
 //                       (defaults to Resend's test sender, which only delivers to the account owner)
@@ -16,6 +19,7 @@ const RATE_LIMIT = { windowMs: 10 * 60 * 1000, max: 5 };
 const recentSubmissions = new Map(); // best-effort, per warm instance
 const DUPLICATE_WINDOW_MS = 10 * 60 * 1000;
 const recentEnquiries = new Map(); // email+message -> time sent (best-effort duplicate guard)
+const pendingEnquiries = new Map(); // one in-flight provider request per identical enquiry
 const FIELD_LABELS = { name: "Name", email: "Email", phone: "Phone number", company: "Company", service: "Service", message: "Message" };
 
 function escapeHtml(value) {
@@ -59,12 +63,20 @@ export function validate(body) {
   return { data, errors };
 }
 
+function clientIp(req) {
+  // Hostinger CDN appends the visitor IP as the last forwarded entry.
+  // Never trust the first entry: it may be supplied by the caller.
+  const forwarded = String(req.headers?.["x-forwarded-for"] || "").split(",").at(-1).trim();
+  return isIP(forwarded) ? forwarded : req.socket?.remoteAddress || "unknown";
+}
+
 function isRateLimited(ip, now = Date.now()) {
   const history = (recentSubmissions.get(ip) || []).filter((time) => now - time < RATE_LIMIT.windowMs);
-  history.push(now);
+  const limited = history.length >= RATE_LIMIT.max;
+  if (!limited) history.push(now);
   recentSubmissions.set(ip, history);
   prune(recentSubmissions, RATE_LIMIT.windowMs, now);
-  return history.length > RATE_LIMIT.max;
+  return limited;
 }
 
 async function readJson(req) {
@@ -114,8 +126,7 @@ export default async function handler(req, res, { fetchImpl = globalThis.fetch, 
     return send(res, 200, { ok: true });
   }
 
-  const ip = String(req.headers?.["x-forwarded-for"] || "").split(",")[0].trim() || "unknown";
-  if (isRateLimited(ip)) {
+  if (isRateLimited(clientIp(req))) {
     return send(res, 429, { ok: false, error: "Too many requests. Please try again later." });
   }
 
@@ -127,11 +138,18 @@ export default async function handler(req, res, { fetchImpl = globalThis.fetch, 
 ${data.message}`;
   const sentAt = recentEnquiries.get(enquiryKey);
   if (sentAt && Date.now() - sentAt < DUPLICATE_WINDOW_MS) return send(res, 200, { ok: true, duplicate: true });
+  const pending = pendingEnquiries.get(enquiryKey);
+  if (pending) {
+    const delivered = await pending;
+    return delivered
+      ? send(res, 200, { ok: true, duplicate: true })
+      : send(res, 502, { ok: false, error: "We could not send your request. Please try again." });
+  }
 
   const apiKey = env.RESEND_API_KEY;
-  const to = String(env.CONTACT_TO_EMAIL || "").split(",").map((item) => item.trim()).filter(Boolean);
-  if (!apiKey || !to.length) {
-    console.error("[contact] RESEND_API_KEY or CONTACT_TO_EMAIL is not configured.");
+  const to = [PRIMARY_CONTACT_EMAIL];
+  if (!apiKey) {
+    console.error("[contact] RESEND_API_KEY is not configured.");
     return send(res, 503, { ok: false, error: "The contact service is not configured yet." });
   }
 
@@ -147,29 +165,40 @@ ${data.message}`;
 <h3>Message</h3><p style="white-space:pre-wrap">${escapeHtml(data.message)}</p>`;
   const text = `${rows.map(([label, value]) => `${label}: ${value}`).join("\n")}\n\nMessage:\n${data.message}`;
 
-  try {
-    const response = await fetchImpl("https://api.resend.com/emails", {
-      method: "POST",
-      headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
-      body: JSON.stringify({
-        from: env.CONTACT_FROM_EMAIL || "RAPT & Co. Website <onboarding@resend.dev>",
-        to,
-        reply_to: data.email,
-        subject: `Consultation request: ${data.service} (${data.name})`,
-        html,
-        text,
-      }),
-    });
-    if (!response.ok) {
-      console.error("[contact] Resend error", response.status, await response.text());
-      return send(res, 502, { ok: false, error: "We could not send your request. Please try again." });
+  const attempt = (async () => {
+    try {
+      const response = await fetchImpl("https://api.resend.com/emails", {
+        method: "POST",
+        headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
+        body: JSON.stringify({
+          from: env.CONTACT_FROM_EMAIL || "RAPT & Co. Website <onboarding@resend.dev>",
+          to,
+          reply_to: data.email,
+          subject: `Consultation request: ${data.service} (${data.name})`,
+          html,
+          text,
+        }),
+      });
+      if (!response.ok) {
+        // Avoid logging provider payloads that may contain enquiry data.
+        console.error("[contact] Resend error", response.status);
+        return false;
+      }
+      recentEnquiries.set(enquiryKey, Date.now());
+      prune(recentEnquiries, DUPLICATE_WINDOW_MS, Date.now());
+      return true;
+    } catch (error) {
+      console.error("[contact] Network error", error?.name || "Error");
+      return false;
     }
-  } catch (error) {
-    console.error("[contact] Network error", error);
-    return send(res, 502, { ok: false, error: "We could not send your request. Please try again." });
+  })();
+  pendingEnquiries.set(enquiryKey, attempt);
+  try {
+    const delivered = await attempt;
+    return delivered
+      ? send(res, 200, { ok: true })
+      : send(res, 502, { ok: false, error: "We could not send your request. Please try again." });
+  } finally {
+    pendingEnquiries.delete(enquiryKey);
   }
-
-  recentEnquiries.set(enquiryKey, Date.now());
-  prune(recentEnquiries, DUPLICATE_WINDOW_MS, Date.now());
-  return send(res, 200, { ok: true });
 }
